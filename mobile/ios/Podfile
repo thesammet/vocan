@@ -6,7 +6,7 @@ install! 'cocoapods', :deterministic_uuids => false
 
 production = ENV["PRODUCTION"] == "1"
 
-target 'mobile' do
+target 'Vocan' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -23,7 +23,7 @@ target 'mobile' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'mobileTests' do
+  target 'VocanTests' do
     inherit! :complete
     # Pods for testing
   end
