@@ -6,6 +6,9 @@ export const COLORS = {
     inputBg: '#090909',
     inputHintText: '#757575',
     paleText: '#353535',
-    mainRed: '#FF5050'
+    mainRed: '#FF5050',
+    switchInactiveCircleColor: '#303030',
+    paleBlue: '#2258e3',
+    disabledButton: '#2e5ed9'
     // your colors
 }

@@ -5,7 +5,7 @@ import { Codesandbox, Search, Settings } from '../components/icons'
 import Home from '../screens/Home'
 import SettingsScreen from '../screens/Settings'
 import Wordbox from '../screens/Wordbox'
-import { COLORS } from '../services/colors'
+import { COLORS } from '../utils/colors'
 
 const Tab = createBottomTabNavigator()
 
