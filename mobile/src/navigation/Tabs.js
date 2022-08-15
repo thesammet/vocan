@@ -32,10 +32,10 @@ const Tabs = () => {
                     headerShown: false,
                     tabBarIcon: ({ focused, color, size }) => {
                         return focused ? (
-                            <SearchBold width={24} height={24} />
+                            <Globe width={24} height={24} />
                         ) : (
                             <View style={{ opacity: 0.5 }}>
-                                <SearchBold width={24} height={24} />
+                                <Globe width={24} height={24} />
                             </View>
                         );
                     },

@@ -29,14 +29,14 @@ const HomeBasicHeader = ({
         <>
             {isNavBack ? (
                 <View style={styles.container} {...props}>
-                    <TouchableOpacity onPress={() => type == 'game' ? navigation.navigate("QrScreen") : forwardBack()} activeOpacity={0.8}>
+                    <TouchableOpacity onPress={() => console.log("back button pressed")} activeOpacity={0.8}>
 
                         <View style={styles.arrowLeftContainer}>
                             <ArrowLeft width={28} height={28} color="#101010" />
                         </View>
                     </TouchableOpacity>
                     <Text
-                        style={[styles.textNavTrue, type == 'game' && styles.textGame]}>
+                        style={[styles.textNavTrue]}>
                         {title}
                     </Text>
                     <ArrowLeft width="42" height="42" />
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
         paddingLeft: 32,
         paddingRight: 24,
-        //borderBottomWidth: 1,
         shadowColor: 'white',
         shadowOffset: {
             width: 3,
