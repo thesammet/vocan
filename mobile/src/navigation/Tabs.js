@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { View } from 'react-native'
-import { Codesandbox, Search, Settings } from '../components/icons'
+import { Codesandbox, Search, Settings, Fav, Globe, SearchBold } from '../components/icons'
 import Home from '../screens/Home'
 import SettingsScreen from '../screens/Settings'
 import Wordbox from '../screens/Wordbox'
@@ -14,7 +14,7 @@ const Tabs = () => {
         <Tab.Navigator
             screenOptions={{
                 tabBarStyle: {
-                    backgroundColor: COLORS.white,
+                    backgroundColor: COLORS.black,
                     height: 62,
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -32,10 +32,10 @@ const Tabs = () => {
                     headerShown: false,
                     tabBarIcon: ({ focused, color, size }) => {
                         return focused ? (
-                            <Search width={24} height={24} color={'red'} />
+                            <SearchBold width={24} height={24} />
                         ) : (
                             <View style={{ opacity: 0.5 }}>
-                                <Search width={24} height={24} color={'red'} />
+                                <SearchBold width={24} height={24} />
                             </View>
                         );
                     },
@@ -54,10 +54,10 @@ const Tabs = () => {
                     headerShown: false,
                     tabBarIcon: ({ focused, color, size }) => {
                         return focused ? (
-                            <Codesandbox width={24} height={24} color={'red'} />
+                            <Fav width={24} height={24} />
                         ) : (
                             <View style={{ opacity: 0.5 }}>
-                                <Codesandbox width={24} height={24} color={'red'} />
+                                <Fav width={24} height={24} />
                             </View>
                         );
                     },
@@ -78,10 +78,10 @@ const Tabs = () => {
                     headerShown: false,
                     tabBarIcon: ({ focused, color, size }) => {
                         return focused ? (
-                            <Settings width={24} height={24} color={'red'} />
+                            <Settings width={24} height={24} />
                         ) : (
                             <View style={{ opacity: 0.5 }}>
-                                <Settings width={24} height={24} color={'red'} />
+                                <Settings width={24} height={24} />
                             </View>
                         );
                     },

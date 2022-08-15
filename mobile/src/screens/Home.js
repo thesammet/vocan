@@ -1,13 +1,26 @@
 import React from 'react';
 import {
-    Text,
+    Text, View, StyleSheet
 } from 'react-native';
 import TYPOGRAPHY from '../utils/typography'
+import { COLORS } from '../utils/colors'
+import HomeBasicHeader from '../components/CustomHeader';
 
-const Home = () => {
+const Home = ({ navigation }) => {
     return (
-        <Text style={TYPOGRAPHY.H1Regular}>Home</Text>
+        <View style={styles.container}>
+            <HomeBasicHeader
+                navigation={navigation}
+                title="Search"
+                isNavBack={false}
+            />
+        </View>
     )
 }
-
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.black,
+    }
+})
 export default Home
