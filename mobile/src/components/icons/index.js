@@ -1,7 +1,13 @@
 export {default as ArrowLeft} from './ArrowLeft';
+export {default as ChevronDown} from './ChevronDown';
+export {default as ChevronLeft} from './ChevronLeft';
+export {default as ChevronRight} from './ChevronRight';
 export {default as Codesandbox} from './Codesandbox';
+export {default as Cross} from './Cross';
 export {default as Fav} from './Fav';
 export {default as Globe} from './Globe';
+export {default as HeartFill} from './HeartFill';
+export {default as Heart} from './Heart';
 export {default as SearchBold} from './SearchBold';
 export {default as Settings} from './Settings';
 export {default as Swap} from './Swap';

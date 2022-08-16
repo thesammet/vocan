@@ -7,9 +7,11 @@ import { COLORS } from '../utils/colors'
 import HomeBasicHeader from '../components/CustomHeader';
 import { CustomTextInputMultiline } from '../components/CustomInputText'
 import { Swap } from '../components/icons';
+import { InputArea } from '../components/CustomInputArea';
+import TranslateButton from '../components/TranslateButton'
 
 const Home = ({ navigation }) => {
-    const [searchText, onchangeSearchText] = useState('')
+    const [searchText, onchangeSearchText] = useState(null)
 
     return (
         <TouchableOpacity activeOpacity={1} onPress={Keyboard.dismiss} style={styles.keyboarDismissContainer}>
@@ -28,11 +30,29 @@ const Home = ({ navigation }) => {
                             <Swap width={24} height={24} style={{ marginLeft: 12 }} />
                         </TouchableOpacity>
                     </View>
-                    <CustomTextInputMultiline
+                    {/* <CustomTextInputMultiline
                         placeholder={"Enter word"}
                         maxLength={40}
                         onChangeText={searchText => onchangeSearchText(searchText)}
-                        value={searchText} />
+                        value={searchText} /> */}
+                    <InputArea
+
+                        edit={true}
+                    />
+                    <View style={{ marginBottom: 24, marginTop: 8 }}>
+                        <TranslateButton
+                            verticalPadding={16}
+                            title={"Translate"}
+                            onPress={() => {
+                                console.log("translate")
+                            }}
+                            disabled={!searchText} />
+                    </View>
+                    <InputArea
+                        editable={false}
+                        edit={false}
+                        selectTextOnFocus={false}
+                    />
                 </View>
             </View>
         </TouchableOpacity>
@@ -55,6 +75,14 @@ const styles = StyleSheet.create({
         marginTop: 16,
         marginBottom: 18,
         marginLeft: 4
+    },
+    disabledTranslateView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 32,
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: 'red'
     }
 })
 export default Home

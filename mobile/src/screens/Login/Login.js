@@ -64,6 +64,7 @@ const Login = ({ navigation }) => {
             </KeyboardAvoidingView >
             <View style={{ marginHorizontal: 44 }}>
                 <CustomButton
+                    verticalPadding={20}
                     title={"Login"}
                     onPress={() => {
                         console.log(username + " " + password)

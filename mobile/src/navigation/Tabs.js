@@ -15,7 +15,7 @@ const Tabs = () => {
             screenOptions={{
                 tabBarStyle: {
                     backgroundColor: COLORS.black,
-                    height: 62,
+                    height: 70,
                     justifyContent: 'center',
                     alignItems: 'center',
                     paddingBottom: 1,
@@ -32,10 +32,10 @@ const Tabs = () => {
                     headerShown: false,
                     tabBarIcon: ({ focused, color, size }) => {
                         return focused ? (
-                            <Globe width={24} height={24} />
+                            <Globe width={32} height={32} />
                         ) : (
                             <View style={{ opacity: 0.5 }}>
-                                <Globe width={24} height={24} />
+                                <Globe width={32} height={32} />
                             </View>
                         );
                     },
@@ -54,10 +54,10 @@ const Tabs = () => {
                     headerShown: false,
                     tabBarIcon: ({ focused, color, size }) => {
                         return focused ? (
-                            <Fav width={24} height={24} />
+                            <Fav width={32} height={32} />
                         ) : (
                             <View style={{ opacity: 0.5 }}>
-                                <Fav width={24} height={24} />
+                                <Fav width={32} height={32} />
                             </View>
                         );
                     },
@@ -78,10 +78,10 @@ const Tabs = () => {
                     headerShown: false,
                     tabBarIcon: ({ focused, color, size }) => {
                         return focused ? (
-                            <Settings width={24} height={24} />
+                            <Settings width={32} height={32} />
                         ) : (
                             <View style={{ opacity: 0.5 }}>
-                                <Settings width={24} height={24} />
+                                <Settings width={32} height={32} />
                             </View>
                         );
                     },

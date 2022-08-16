@@ -110,6 +110,7 @@ const Register = ({ navigation }) => {
                     </View>
 
                     <CustomButton
+                        verticalPadding={20}
                         title={pageNumber == 3 ? "Complete" : "Continue"}
                         onPress={() => {
                             pageNumber != 3 &&
