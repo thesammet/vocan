@@ -3,8 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { View } from 'react-native'
 import { Codesandbox, Search, Settings, Fav, Globe, SearchBold } from '../components/icons'
 import Home from '../screens/Home'
-import SettingsScreen from '../screens/Settings'
-import Wordbox from '../screens/Wordbox'
+import SettingsStack from '../stacks/Settings'
+import HistoryFav from '../screens/HistoryFav'
 import { COLORS } from '../utils/colors'
 
 const Tab = createBottomTabNavigator()
@@ -47,8 +47,8 @@ const Tabs = () => {
                 }}
             />
             <Tab.Screen
-                name="WordBox"
-                component={Wordbox}
+                name="HistoryFav"
+                component={HistoryFav}
                 options={{
                     title: 'Word Box',
                     headerShown: false,
@@ -72,7 +72,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Settings"
-                component={SettingsScreen}
+                component={SettingsStack}
                 options={{
                     title: 'Settings',
                     headerShown: false,

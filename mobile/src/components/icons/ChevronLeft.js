@@ -11,7 +11,7 @@ const SvgChevronLeft = props => (
       fillRule="evenodd"
       clipRule="evenodd"
       d="M15.354 5.646a.5.5 0 0 1 0 .708L9.707 12l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0Z"
-      fill="#fff"
+      fill="#124BDC"
     />
   </Svg>
 );

@@ -8,18 +8,20 @@ const CustomButton = (props) => {
         <Pressable style={({ pressed }) => [
             {
                 backgroundColor:
-                    !props.disabled ?
-                        pressed
-                            ? COLORS.paleBlue
-                            : COLORS.mainBlue
-                        : COLORS.disabledButton,
+                    props.title == "Edit" || props.title == "Sign Out" || props.title == "Cancel" ?
+                        COLORS.disabledButton :
+                        !props.disabled ?
+                            pressed
+                                ? COLORS.paleBlue
+                                : COLORS.mainBlue
+                            : COLORS.disabledButton,
                 paddingVertical: props.verticalPadding,
             },
             styles.button
         ]}
             disabled={props.disabled}
             onPress={props.onPress}>
-            <Text style={[TYPOGRAPHY.H4Semibold, { color: COLORS.white }]}>{props.title}</Text>
+            <Text style={[TYPOGRAPHY.H4Semibold, { color: props.title == "Edit" ? COLORS.switchInactiveCircleColor : COLORS.white }]}>{props.title}</Text>
         </Pressable>
     )
 }

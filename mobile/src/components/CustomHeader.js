@@ -7,7 +7,7 @@ import {
     ImageBackground,
 } from 'react-native';
 import { COLORS } from '../utils/colors';
-import { ArrowLeft, VocanIcon } from './icons';
+import { ArrowLeft, VocanIcon, ChevronLeft } from './icons';
 
 const HomeBasicHeader = ({
     navigation,
@@ -17,10 +17,6 @@ const HomeBasicHeader = ({
     ...props
 }) => {
 
-    const forwardProfile = () => {
-        navigation.navigate('Profile');
-    };
-
     const forwardBack = () => {
         navigation.goBack();
     };
@@ -29,26 +25,21 @@ const HomeBasicHeader = ({
         <>
             {isNavBack ? (
                 <View style={styles.container} {...props}>
-                    <TouchableOpacity onPress={() => console.log("back button pressed")} activeOpacity={0.8}>
-
-                        <View style={styles.arrowLeftContainer}>
-                            <ArrowLeft width={28} height={28} color="#101010" />
-                        </View>
-                    </TouchableOpacity>
-                    <Text
-                        style={[styles.textNavTrue]}>
-                        {title}
-                    </Text>
-                    <ArrowLeft width="42" height="42" />
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={() => { forwardBack }} activeOpacity={0.8} style={{ marginRight: 4 }}>
+                            <ChevronLeft width={32} height={32} color="#124BDC" />
+                        </TouchableOpacity>
+                        <Text
+                            style={[styles.textNavFalse]}>
+                            {title}
+                        </Text>
+                    </View>
+                    <VocanIcon width="42" height="42" />
                 </View>
             ) : (
                 <View style={styles.container} {...props}>
                     <Text style={styles.textNavFalse}>{title}</Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('Profile')}
-                        activeOpacity={0.8}>
-                        <VocanIcon width="42" height="42" />
-                    </TouchableOpacity>
+                    <VocanIcon width="42" height="42" />
                 </View>
             )}
         </>

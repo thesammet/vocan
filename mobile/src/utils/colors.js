@@ -10,4 +10,6 @@ export const COLORS = {
     switchInactiveCircleColor: '#303030',
     paleBlue: '#2258e3',
     disabledButton: '#141414',
+    pickedFavHisColor: '#202020',
+    modalBg: '#252525'
 }

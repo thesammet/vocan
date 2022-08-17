@@ -6,12 +6,12 @@ import TYPOGRAPHY from '../utils/typography'
 import { COLORS } from '../utils/colors'
 import HomeBasicHeader from '../components/CustomHeader';
 import { CustomTextInputMultiline } from '../components/CustomInputText'
-import { Swap } from '../components/icons';
+import { Swap, ChevronDown } from '../components/icons';
 import { InputArea } from '../components/CustomInputArea';
 import TranslateButton from '../components/TranslateButton'
 
 const Home = ({ navigation }) => {
-    const [searchText, onchangeSearchText] = useState(null)
+    const [text, setText] = useState("");
 
     return (
         <TouchableOpacity activeOpacity={1} onPress={Keyboard.dismiss} style={styles.keyboarDismissContainer}>
@@ -24,31 +24,38 @@ const Home = ({ navigation }) => {
                 />
                 <View style={styles.searchView}>
                     <View style={styles.translatedLanguageGroup}>
-                        <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText }]}>Translated language: </Text>
-                        <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white, marginLeft: 8 }]}>Turkish</Text>
+                        <View style={styles.languageSelectView}>
+                            <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, textAlign: 'center', margin: 10 }]}>Auto-detect</Text>
+                            <ChevronDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} style={{ marginRight: 8 }} />
+                        </View>
                         <TouchableOpacity activeOpacity={0.5} onPress={() => { console.log("change icon") }}>
-                            <Swap width={24} height={24} style={{ marginLeft: 12 }} />
+                            <Swap width={24} height={24} />
                         </TouchableOpacity>
+                        <View style={styles.languageSelectView}>
+                            <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, textAlign: 'center', margin: 10 }]}>Auto-detect</Text>
+                            <ChevronDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} style={{ marginRight: 8 }} />
+                        </View>
                     </View>
-                    {/* <CustomTextInputMultiline
-                        placeholder={"Enter word"}
-                        maxLength={40}
-                        onChangeText={searchText => onchangeSearchText(searchText)}
-                        value={searchText} /> */}
-                    <InputArea
 
+                    <InputArea
+                        placeholder={'Enter text'}
+                        value={text}
+                        onChangeText={(value) => setText(value)}
                         edit={true}
+                        clearText={() => setText('')}
+                        text={text}
                     />
-                    <View style={{ marginBottom: 24, marginTop: 8 }}>
+                    <View style={{ marginVertical: 16 }}>
                         <TranslateButton
                             verticalPadding={16}
                             title={"Translate"}
                             onPress={() => {
                                 console.log("translate")
                             }}
-                            disabled={!searchText} />
+                            disabled={!text} />
                     </View>
                     <InputArea
+                        placeholder={'Translation'}
                         editable={false}
                         edit={false}
                         selectTextOnFocus={false}
@@ -74,7 +81,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 16,
         marginBottom: 18,
-        marginLeft: 4
+        justifyContent: 'space-between',
+
     },
     disabledTranslateView: {
         alignItems: 'center',
@@ -83,6 +91,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderWidth: 1,
         borderColor: 'red'
+    },
+    languageSelectView: {
+        backgroundColor: COLORS.inputBg,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 12,
+        justifyContent: 'center'
     }
 })
 export default Home
