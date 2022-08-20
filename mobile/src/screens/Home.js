@@ -51,19 +51,19 @@ const Home = ({ navigation }) => {
                 />
                 <View style={styles.searchView}>
                     <View style={styles.translatedLanguageGroup}>
-                        <TouchableOpacity activeOpacity={0.5} onPress={() => { setLanguageSelector(1); bottomSheet.current.show(); }}>
-                            <View style={styles.languageSelectView}>
-                                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, textAlign: 'center', margin: 10 }]}>{mainLanguage.name}</Text>
-                                <ChevronDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} style={{ marginRight: 8 }} />
+                        <TouchableOpacity style={styles.languageSelectView} activeOpacity={0.5} onPress={() => { setLanguageSelector(1); bottomSheet.current.show(); }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', flex: 1 }}>
+                                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, textAlign: 'center', }]}>{mainLanguage.name}</Text>
+                                <ChevronDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.5} onPress={() => { addMainLanguage(translatedLanguage); addTranslatedLanguage(mainLanguage); }}>
-                            <Swap width={24} height={24} />
+                        <TouchableOpacity style={{ marginHorizontal: 10 }} activeOpacity={0.5} onPress={() => { addMainLanguage(translatedLanguage); addTranslatedLanguage(mainLanguage); }}>
+                            <Swap width={24} height={24} fill={mainLanguage.code != "auto-detect" ? COLORS.mainBlue : COLORS.inputHintText} />
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.5} onPress={() => { setLanguageSelector(2); bottomSheet.current.show(); }}>
-                            <View style={styles.languageSelectView}>
-                                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, textAlign: 'center', margin: 10 }]}>{translatedLanguage.name}</Text>
-                                <ChevronDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} style={{ marginRight: 8 }} />
+                        <TouchableOpacity style={styles.languageSelectView} activeOpacity={0.5} onPress={() => { setLanguageSelector(2); bottomSheet.current.show(); }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', flex: 1 }}>
+                                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, textAlign: 'center' }]}>{translatedLanguage.name}</Text>
+                                <ChevronDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} />
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
         marginTop: 16,
         marginBottom: 18,
         justifyContent: 'space-between',
-
     },
     disabledTranslateView: {
         alignItems: 'center',
@@ -129,6 +128,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 12,
         justifyContent: 'center',
+        flex: 1,
+        paddingHorizontal: 12,
+        paddingVertical: 10
     },
     renderItem: {
         flexDirection: 'row',

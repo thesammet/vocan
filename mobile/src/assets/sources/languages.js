@@ -1,4 +1,5 @@
 export const languages = [
+    { "code": "auto-detect", "name": "Auto-detect", "nativeName": "Auto-detect" },
     { "code": "ab", "name": "Abkhaz", "nativeName": "аҧсуа" },
     { "code": "aa", "name": "Afar", "nativeName": "Afaraf" },
     { "code": "af", "name": "Afrikaans", "nativeName": "Afrikaans" },

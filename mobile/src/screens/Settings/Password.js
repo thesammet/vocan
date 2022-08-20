@@ -19,8 +19,7 @@ const Password = ({ navigation }) => {
     let oldPasswordLength = oldPassword.length
     let newPasswordLength = newPassword.length
     let newPasswordAgainLength = newPasswordAgain.length
-    console.log("\n1: " + oldPasswordLength + "\n2: " + newPasswordLength + "\n3: " + newPasswordAgainLength + "\n4: " + (newPassword !== newPasswordAgain))
-    //console.log("1:" + oldPasswordLength >= 8 + "\n2: " + newPassword !== newPasswordAgain + "\n3: " + newPasswordLength >= 8 + "\n4: " + newPasswordAgainLength >= 8)
+
     return (
         <View style={styles.container}>
             <HomeBasicHeader

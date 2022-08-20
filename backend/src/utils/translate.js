@@ -1,8 +1,8 @@
 const { translate } = require('bing-translate-api');
 
-const translationFunction = async (vocabulary, languageTo) => {
+const translationFunction = async (vocabulary, mainLanguage, languageTo) => {
     try {
-        const res = await translate(vocabulary.toLowerCase(), null, languageTo, true)
+        const res = await translate(vocabulary.toLowerCase(), mainLanguage, languageTo, true)
         return res
     } catch (error) {
         return err
