@@ -35,7 +35,7 @@ const SettingsScreen = ({ navigation }) => {
             />
             <CustomModal title={'Are you sure you want to log out?'} isModalVisible={isModalVisible} toggleModal={toggleModal} />
             <PasswordModal title={'Enter your password to edit the profile.'} isModalVisible={isPasswordModalVisible} toggleModal={togglePasswordModal} navigateToPage={() => {
-                navigation.navigate('UserInfo');
+                navigation.navigate('Password');
                 togglePasswordModal();
             }} />
 
@@ -57,7 +57,7 @@ const SettingsScreen = ({ navigation }) => {
                             disabled={false} />
                     </View>
                     <View style={[styles.dividerView, { borderBottomColor: COLORS.disabledButton }]}></View>
-                    <TouchableOpacity activeOpacity={.5} onPress={() => togglePasswordModal()}>
+                    <TouchableOpacity activeOpacity={.5} onPress={() => navigation.navigate('Password')}>
                         <View style={[styles.settingsGroup, { marginBottom: 24 }]}>
                             <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>Password</Text>
                             <ChevronRight width={28} height={28} color="#101010" />

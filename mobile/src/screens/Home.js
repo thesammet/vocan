@@ -16,9 +16,6 @@ import { LanguageContext } from '../context/Language';
 const Home = ({ navigation }) => {
     //async
     const { mainLanguage, addMainLanguage, translatedLanguage, addTranslatedLanguage } = useContext(LanguageContext)
-
-    console.log(mainLanguage + " / " + translatedLanguage)
-    //
     const [text, setText] = useState("");
     const bottomSheet = useRef();
     const windowHeight = Dimensions.get('window').height;
@@ -60,7 +57,7 @@ const Home = ({ navigation }) => {
                                 <ChevronDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} style={{ marginRight: 8 }} />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.5} onPress={() => { console.log("Swap language") }}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={() => { addMainLanguage(translatedLanguage); addTranslatedLanguage(mainLanguage); }}>
                             <Swap width={24} height={24} />
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.5} onPress={() => { setLanguageSelector(2); bottomSheet.current.show(); }}>
