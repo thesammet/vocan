@@ -12,6 +12,7 @@ import TranslateButton from '../components/TranslateButton'
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { languages } from '../assets/sources/languages'
 import { LanguageContext } from '../context/Language';
+import { postWord } from '../api/word';
 
 const Home = ({ navigation }) => {
     //async
@@ -21,6 +22,7 @@ const Home = ({ navigation }) => {
     const windowHeight = Dimensions.get('window').height;
     const [languageSelector, setLanguageSelector] = useState(null)
     const selectedLanguage = languageSelector === 1 ? mainLanguage.code : translatedLanguage.code
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmY0MDZiZDNmZWM2YWFkNGQ2NWQxZGUiLCJpYXQiOjE2NjEwMjU2NzR9.6alWSmh_zSdH1ToMzHdDaIfFAERYsvnG2YkVvyyZzyI"
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -81,7 +83,7 @@ const Home = ({ navigation }) => {
                             verticalPadding={16}
                             title={"Translate"}
                             onPress={() => {
-                                console.log("translate")
+                                postWord(token, text, mainLanguage.code, translatedLanguage.code)
                             }}
                             disabled={!text} />
                     </View>
