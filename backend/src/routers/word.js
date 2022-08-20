@@ -8,12 +8,12 @@ router.post('/words', auth, async (req, res) => {
     //If word was created; just show the word otherwise create the word and save the db
     const translateObject = await translateFunction(req.body.main, req.body.from, req.body.to)
     const mean = translateObject.translation
-    const translated = `${req.body.from == "auto-detect" ? translateObject.language.from : req.body.from}-${req.body.to}`
+    const translated = `${req.body.from == "auto-detect" ? translateObject.toString().includes("Error") ? "Not Supported" : translateObject.language.from : req.body.from}-${req.body.to}`
     const myWord = new Word({ ...req.body, owner: req.user._id, mean, translated })
     const savedWord = await Word.findOne({ main: req.body.main })
 
     try {
-        if (!savedWord) {
+        if (!savedWord || !translateObject.toString().includes("Error")) {
             await myWord.save()
             return res.status(201).send({ myWord })
         }

@@ -5,7 +5,7 @@ const translationFunction = async (vocabulary, mainLanguage, languageTo) => {
         const res = await translate(vocabulary.toLowerCase(), mainLanguage, languageTo, true)
         return res
     } catch (error) {
-        return err
+        return error
     }
 }
 

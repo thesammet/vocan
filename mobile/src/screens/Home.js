@@ -17,12 +17,14 @@ import { postWord } from '../api/word';
 const Home = ({ navigation }) => {
     //async
     const { mainLanguage, addMainLanguage, translatedLanguage, addTranslatedLanguage } = useContext(LanguageContext)
-    const [text, setText] = useState("");
+    const [text, setText] = useState("")
+    const [mean, setMean] = useState(null)
     const bottomSheet = useRef();
-    const windowHeight = Dimensions.get('window').height;
+    const windowHeight = Dimensions.get('window').height
     const [languageSelector, setLanguageSelector] = useState(null)
     const selectedLanguage = languageSelector === 1 ? mainLanguage.code : translatedLanguage.code
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmY0MDZiZDNmZWM2YWFkNGQ2NWQxZGUiLCJpYXQiOjE2NjEwMjU2NzR9.6alWSmh_zSdH1ToMzHdDaIfFAERYsvnG2YkVvyyZzyI"
+    let translatedLanguages = languages.filter((_, i) => i > 0)
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -41,7 +43,7 @@ const Home = ({ navigation }) => {
             <View style={styles.container}>
                 <BottomSheet hasDraggableIcon={false} ref={bottomSheet} height={windowHeight - windowHeight / 4.5} radius={32} sheetBackgroundColor={'#101010'} backgroundColor={'transparent'} draggable={false} >
                     <FlatList
-                        data={languages}
+                        data={languageSelector == 1 ? languages : translatedLanguages}
                         renderItem={renderItem}
                         keyExtractor={item => item.code}
                     />
@@ -137,7 +139,8 @@ const styles = StyleSheet.create({
     renderItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: 32
+        marginHorizontal: 32,
+        marginBottom: 8
     },
 
     roundButton: {
