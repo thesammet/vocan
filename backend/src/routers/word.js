@@ -13,13 +13,23 @@ router.post('/words', auth, async (req, res) => {
     const savedWord = await Word.findOne({ main: req.body.main })
 
     try {
-        if (!savedWord || !translateObject.toString().includes("Error")) {
+
+        if (!savedWord && !translateObject.toString().includes("Error")) {
             await myWord.save()
             return res.status(201).send({ myWord })
         }
         res.status(200).send({ data: myWord })
     } catch (error) {
         res.status(400).send({ error: error.toString() })
+    }
+})
+
+router.get('/words', auth, async (req, res) => {
+    try {
+        const words = await Word.find({ owner: req.user._id })
+        res.status(200).send({ data: words })
+    } catch (error) {
+        res.status(400).send()
     }
 })
 
@@ -31,15 +41,6 @@ router.get('/words/:id', auth, async (req, res) => {
             return res.status(404).send()
         }
         res.status(200).send(word)
-    } catch (error) {
-        res.status(400).send()
-    }
-})
-
-router.get('/words', auth, async (req, res) => {
-    try {
-        const words = await Word.find({ owner: req.user._id })
-        res.status(200).send({ data: words })
     } catch (error) {
         res.status(400).send()
     }

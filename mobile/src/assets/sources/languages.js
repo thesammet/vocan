@@ -1,7 +1,7 @@
 export const languages = [
     { "code": "auto-detect", "name": "Auto-detect", "nativeName": "Auto-detect" },
     { "code": "en", "name": "English", "nativeName": "English" },
-    { "code": "es", "name": "Spanish; Castilian", "nativeName": "español, castellano" },
+    { "code": "es", "name": "Spanish", "nativeName": "español, castellano" },
     { "code": "de", "name": "German", "nativeName": "Deutsch" },
     { "code": "pt", "name": "Portuguese", "nativeName": "Português" },
     { "code": "hi", "name": "Hindi", "nativeName": "हिन्दी, हिंदी" },

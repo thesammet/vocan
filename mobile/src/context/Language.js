@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-    const [mainLanguage, setMainLanguage] = useState({ name: 'auto-detect', code: 'auto-detect' });
+    const [mainLanguage, setMainLanguage] = useState({ name: 'Auto-detect', code: 'auto-detect' });
     const [translatedLanguage, setTranslatedLanguage] = useState({ name: 'English', code: 'en' });
     useEffect(() => {
         const lanugageControl = async () => {

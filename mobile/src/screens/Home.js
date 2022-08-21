@@ -12,18 +12,18 @@ import TranslateButton from '../components/TranslateButton'
 import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { languages } from '../assets/sources/languages'
 import { LanguageContext } from '../context/Language';
-import { postWord } from '../api/word';
-
+import { translateWord } from '../api/word';
+import { Capitalize, checkText } from '../utils/helper_functions'
 const Home = ({ navigation }) => {
     //async
     const { mainLanguage, addMainLanguage, translatedLanguage, addTranslatedLanguage } = useContext(LanguageContext)
     const [text, setText] = useState("")
-    const [mean, setMean] = useState(null)
+    const [mean, setMean] = useState("")
+    const [languageSelector, setLanguageSelector] = useState(null)
     const bottomSheet = useRef();
     const windowHeight = Dimensions.get('window').height
-    const [languageSelector, setLanguageSelector] = useState(null)
     const selectedLanguage = languageSelector === 1 ? mainLanguage.code : translatedLanguage.code
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmY0MDZiZDNmZWM2YWFkNGQ2NWQxZGUiLCJpYXQiOjE2NjEwMjU2NzR9.6alWSmh_zSdH1ToMzHdDaIfFAERYsvnG2YkVvyyZzyI"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzAyMzdhM2UxMjY4MmI1ZTNiNzBjMWYiLCJpYXQiOjE2NjEwODk4NzR9.8Hy_U44EFZpaNaEyjdG0AQzVwnTICapax66vzJHz9Ss"
     let translatedLanguages = languages.filter((_, i) => i > 0)
 
     const renderItem = ({ item }) => (
@@ -77,15 +77,16 @@ const Home = ({ navigation }) => {
                         value={text}
                         onChangeText={(value) => setText(value)}
                         edit={true}
-                        clearText={() => setText('')}
+                        clearText={() => { setText(''); setMean('') }}
                         text={text}
                     />
                     <View style={{ marginVertical: 16 }}>
                         <TranslateButton
                             verticalPadding={16}
                             title={"Translate"}
-                            onPress={() => {
-                                postWord(token, text, mainLanguage.code, translatedLanguage.code)
+                            onPress={async () => {
+                                const res = await translateWord(token, text, mainLanguage.code, translatedLanguage.code)
+                                setMean(Capitalize(res.myWord.mean))
                             }}
                             disabled={!text} />
                     </View>
@@ -94,6 +95,7 @@ const Home = ({ navigation }) => {
                         editable={false}
                         edit={false}
                         selectTextOnFocus={false}
+                        text={mean}
                     />
                 </View>
             </View>

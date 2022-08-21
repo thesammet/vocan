@@ -5,16 +5,19 @@ import {
 import TYPOGRAPHY from '../utils/typography'
 import { COLORS } from '../utils/colors'
 import { Heart, HeartFill } from './icons';
+import { Capitalize } from '../utils/helper_functions';
+
 const FavItem = (props) => {
+
     return (
         <View style={styles.wordView}>
-            <TouchableOpacity activeOpacity={.5} onPress={() => { console.log("delete item from list") }}>
+            <TouchableOpacity activeOpacity={.5} onPress={props.fav}>
                 <HeartFill width={20} height={20} style={{ marginRight: 16, marginTop: 4, }} />
             </TouchableOpacity>
             <View >
-                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{props.title}</Text>
-                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText }]}>Favorite</Text>
-                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, marginTop: 4 }]}>English-Turkish</Text>
+                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{Capitalize(props.item.main)}</Text>
+                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText }]}>{Capitalize(props.item.mean)}</Text>
+                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, marginTop: 4 }]}>{props.item.translated.toUpperCase()}</Text>
             </View>
         </View>
     )

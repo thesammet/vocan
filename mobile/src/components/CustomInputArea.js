@@ -13,7 +13,6 @@ import { COLORS } from "../utils/colors";
 import TYPOGRAPHY from "../utils/typography"
 
 export const InputArea = (props) => {
-
     const [borderColor, setBorderColor] = useState(COLORS.inputBorder)
     const windowHeight = Dimensions.get('window').height;
 
@@ -41,10 +40,10 @@ export const InputArea = (props) => {
                             }>
                             <Cross width={24} height={24} />
                         </TouchableOpacity> : <View />}
-                {<TouchableOpacity
+                {/* {<TouchableOpacity
                     onPress={() => { props.clearText(); console.log("fav ekle") }}>
                     <Heart width={24} height={24} />
-                </TouchableOpacity>}
+                </TouchableOpacity>} */}
             </View> : <View />
             }
         </View >

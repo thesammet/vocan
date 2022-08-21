@@ -4,13 +4,23 @@ import {
 } from 'react-native';
 import TYPOGRAPHY from '../utils/typography'
 import { COLORS } from '../utils/colors'
+import { Capitalize } from '../utils/helper_functions';
+import { Heart, HeartFill } from './icons';
 
 const HistoryItem = (props) => {
     return (
         <View style={styles.wordView}>
-            <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{props.title}</Text>
-            <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText }]}>Favorite</Text>
-            <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, marginTop: 4 }]}>English-Turkish</Text>
+            <View>
+                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{Capitalize(props.item.main)}</Text>
+                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText }]}>{Capitalize(props.item.mean)}</Text>
+                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, marginTop: 4 }]}>{props.item.translated.toUpperCase()}</Text>
+            </View>
+            <TouchableOpacity activeOpacity={.5} onPress={props.fav}>
+                {props.item.fav ?
+                    <HeartFill width={20} height={20} style={{ marginRight: 16, marginTop: 4, }} />
+                    :
+                    <Heart width={20} height={20} style={{ marginRight: 16, marginTop: 4, }} />}
+            </TouchableOpacity>
         </View>
     )
 }
@@ -18,7 +28,9 @@ const HistoryItem = (props) => {
 const styles = StyleSheet.create({
     wordView: {
         marginVertical: 16,
-        marginHorizontal: 48
-    }
+        marginHorizontal: 48,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
 })
 export default HistoryItem
