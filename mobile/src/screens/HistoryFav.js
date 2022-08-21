@@ -5,53 +5,44 @@ import {
 import TYPOGRAPHY from '../utils/typography'
 import { COLORS } from '../utils/colors'
 import HomeBasicHeader from '../components/CustomHeader';
-import HistoryItem from '../components/HistoryItem';
-import FavItem from '../components/FavItem';
-import { getAllWordsHistory, getWordById, favouriteWord, getFavouriteWords, deleteWord } from '../api/word';
-import Loading from '../components/Loading'
-import { Slash, Trash } from '../components/icons'
+import HistoryFavItem from '../components/HistoryFavItem';
+import { getAllWordsHistory, favouriteWord, getFavouriteWords } from '../api/word';
 import { AuthContext } from '../context/Auth'
+import NoWordView from '../components/NoWordView';
+import { customFailMessage } from '../utils/show_messages';
 
 const HistoryFav = ({ navigation }) => {
     const [historyFavPicker, setHistoryFavPicker] = useState(1)
     const [historyData, setHistoryData] = useState([])
     const [favData, setFavData] = useState([])
     const { token } = useContext(AuthContext)
-    const [isLoading, setIsLoading] = useState(false);
-    const [isLoadingFav, setIsLoadingFav] = useState(false);
 
     const getAllWords = async () => {
-        setIsLoading(true);
         let response = await getAllWordsHistory(token);
         if (response.error) {
-            console.log("hata çıktı: " + JSON.stringify(error))
+            customFailMessage("Something went wrong!")
         } else {
-            setHistoryData(response.data);
+            setHistoryData(response.data)
         }
-        setIsLoading(false);
     };
 
     const getAllFavourites = async () => {
-        setIsLoadingFav(true);
         let response = await getFavouriteWords(token);
         if (response.error) {
-            console.log("hata çıktı: " + JSON.stringify(error))
+            customFailMessage("Something went wrong!")
         } else {
-            console.log(response.data)
             setFavData(response.data);
         }
-        setIsLoadingFav(false);
     };
 
     const postToFavourite = async (id) => {
-        setIsLoadingFav(true);
         let response = await favouriteWord(token, id);
         if (response.error) {
-            console.log("hata çıktı: " + JSON.stringify(error))
+            customFailMessage("Something went wrong!")
         } else {
-            historyFavPicker == 1 ? getAllWords() : getAllFavourites()
+            //customSuccessMessage(response.data.fav == true ? "Added to favourites" : "Removed from favorites")
+            console.log(response.data.fav)
         }
-        setIsLoadingFav(false);
     };
 
     useEffect(() => {
@@ -61,15 +52,14 @@ const HistoryFav = ({ navigation }) => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            getAllWords();
-            getAllFavourites();
+            getAllWords()
+            getAllFavourites()
         });
-        console.log("aa")
         return unsubscribe;
     }, [navigation]);
 
     const renderItem = ({ item }) => (
-        historyFavPicker == 1 ? <HistoryItem item={item} fav={() => { postToFavourite(item._id) }} /> : <FavItem item={item} fav={() => { postToFavourite(item._id) }} />
+        <HistoryFavItem item={item} fav={() => { postToFavourite(item._id); }} />
     );
 
     return (
@@ -92,35 +82,24 @@ const HistoryFav = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
             {historyFavPicker == 1 ?
-                isLoading ?
-                    <Loading />
-                    :
-                    historyData.length == 0 ?
-                        <View style={styles.emptyView}>
-                            <Slash width={100} height={100} color={COLORS.paleBlue}></Slash>
-                            <Text style={[TYPOGRAPHY.H3Bold, { color: historyFavPicker == 2 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center', marginTop: 8 }]}>You have no favourite word</Text>
-                        </View>
-                        :
-                        <FlatList
-                            data={historyData}
-                            renderItem={renderItem}
-                            keyExtractor={item => item._id}
-                        /> : isLoadingFav ?
-                    <Loading />
-                    :
-                    favData.length == 0 ?
-                        <View style={styles.emptyView}>
-                            <Slash width={100} height={100} color={COLORS.paleBlue}></Slash>
-                            <Text style={[TYPOGRAPHY.H3Bold, { color: historyFavPicker == 2 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center', marginTop: 8 }]}>You have no favourite word</Text>
-                        </View>
-                        :
-                        <FlatList
-                            data={favData}
-                            renderItem={renderItem}
-                            keyExtractor={item => item._id}
-                        />}
 
-
+                historyData.length == 0 ?
+                    <NoWordView subject={"history"} />
+                    :
+                    <FlatList
+                        data={historyData}
+                        renderItem={renderItem}
+                        keyExtractor={item => item._id}
+                    />
+                :
+                favData.length == 0 ?
+                    <NoWordView subject={"favourite"} />
+                    :
+                    <FlatList
+                        data={favData}
+                        renderItem={renderItem}
+                        keyExtractor={item => item._id}
+                    />}
         </View>
     )
 }

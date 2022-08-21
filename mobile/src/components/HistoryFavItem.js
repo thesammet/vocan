@@ -7,14 +7,20 @@ import { COLORS } from '../utils/colors'
 import { Heart, HeartFill } from './icons';
 import { Capitalize } from '../utils/helper_functions';
 
-const FavItem = (props) => {
-
+const HistoryFavItem = (props) => {
+    const [heartIcon, setHearthIcon] = useState(props.item.fav)
     return (
         <View style={styles.wordView}>
-            <TouchableOpacity activeOpacity={.5} onPress={props.fav}>
-                <HeartFill width={20} height={20} style={{ marginRight: 16, marginTop: 4, }} />
+            <TouchableOpacity activeOpacity={.5} onPress={() => {
+                props.fav();
+                setHearthIcon(!heartIcon)
+            }}>
+                {heartIcon ?
+                    <HeartFill width={20} height={20} style={{ marginRight: 16, marginTop: 4, }} />
+                    :
+                    <Heart width={20} height={20} style={{ marginRight: 16, marginTop: 4, }} />}
             </TouchableOpacity>
-            <View >
+            <View style={{ flex: 1 }}>
                 <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{Capitalize(props.item.main)}</Text>
                 <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText }]}>{Capitalize(props.item.mean)}</Text>
                 <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText, marginTop: 4 }]}>{props.item.translated.toUpperCase()}</Text>
@@ -26,9 +32,10 @@ const FavItem = (props) => {
 const styles = StyleSheet.create({
     wordView: {
         marginVertical: 16,
-        marginLeft: 34,
-        marginRight: 24,
+        paddingLeft: 34,
+        paddingRight: 24,
         flexDirection: 'row',
+        flex: 1,
     }
 })
-export default FavItem
+export default HistoryFavItem
