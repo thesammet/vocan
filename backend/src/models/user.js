@@ -34,16 +34,6 @@ const userSchema = new mongoose.Schema({
         minLength: 8,
         trim: true,
     },
-    lang: {
-        type: String,
-        required: true,
-        length: 2,
-        validate(lang) {
-            if (lang.length != 2) {
-                throw new Error('Lang can\'t be different from 2')
-            }
-        }
-    },
     tokens: [{
         token: {
             type: String,
@@ -59,7 +49,7 @@ userSchema.methods.toJSON = function () {
     const user = this
     const userObject = user.toObject()
 
-    delete userObject.password
+    //delete userObject.password
     delete userObject.__v
     delete userObject.tokens
 

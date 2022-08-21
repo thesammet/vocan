@@ -13,6 +13,11 @@ const wordSchema = new mongoose.Schema({
         type: String, //en-tr
         required: true
     },
+    fav: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

@@ -13,7 +13,7 @@ router.post('/users', async (req, res) => {
         //delete the token property on spesific spots lodash
         const userModelFiltered = _.omit(user.toObject(), ["_id", "__v", "tokens"])
 
-        res.status(201).send({ user: userModelFiltered })
+        res.status(201).send({ user: userModelFiltered, token })
     } catch (error) {
         res.status(400).send({ error: error.toString() })
     }
@@ -32,7 +32,7 @@ router.post('/users/login', async (req, res) => {
 
 router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['username', 'lang']
+    const allowedUpdates = ['username', 'password', 'email']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
     if (!isValidOperation) {
         return res.status(400).send({ error: 'Invalid updates!' })

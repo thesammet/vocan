@@ -39,26 +39,37 @@ const UserInfo = ({ navigation }) => {
                         onChangeText={email => onChangeUsername(email)}
                         value={email} />
                 </View>
-                <View style={{ marginBottom: 32, flexDirection: 'row', justifyContent: 'center' }}>
-                    <View style={{ width: '50%' }}>
+                <View>
+                    <View style={{ width: '100%', alignSelf: 'center', marginBottom: 24, }}>
                         <CustomButton
                             verticalPadding={windowHeight / 50}
-                            title={"Cancel"}
-                            onPress={() => {
-                                console.log("Cancel")
-                                navigation.goBack()
-                            }}
-                            disabled={false} />
-                    </View>
-                    <View width={16} />
-                    <View style={{ width: '50%' }}>
-                        <CustomButton
-                            verticalPadding={windowHeight / 50}
-                            title={"Update"}
+                            title={"Delete Account"}
                             onPress={
-                                console.log("Update")
+                                () => { console.log("Delete Account") }
                             }
                             disabled={false} />
+                    </View>
+                    <View style={{ marginBottom: 32, flexDirection: 'row', justifyContent: 'center' }}>
+                        <View style={{ width: '50%' }}>
+                            <CustomButton
+                                verticalPadding={windowHeight / 50}
+                                title={"Cancel"}
+                                onPress={() => {
+                                    console.log("Cancel")
+                                    navigation.goBack()
+                                }}
+                                disabled={false} />
+                        </View>
+                        <View width={16} />
+                        <View style={{ width: '50%' }}>
+                            <CustomButton
+                                verticalPadding={windowHeight / 50}
+                                title={"Update"}
+                                onPress={
+                                    console.log("Update")
+                                }
+                                disabled={false} />
+                        </View>
                     </View>
                 </View>
             </View>

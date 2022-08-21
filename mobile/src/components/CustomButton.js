@@ -8,13 +8,15 @@ const CustomButton = (props) => {
         <Pressable style={({ pressed }) => [
             {
                 backgroundColor:
-                    props.title == "Edit" || props.title == "Sign Out" || props.title == "Cancel" ?
-                        COLORS.disabledButton :
-                        !props.disabled ?
-                            pressed
-                                ? COLORS.paleBlue
-                                : COLORS.mainBlue
-                            : COLORS.disabledButton,
+                    props.title == "Delete Account" ?
+                        COLORS.pickedFavHisColor :
+                        props.title == "Edit" || props.title == "Sign Out" || props.title == "Cancel" ?
+                            COLORS.disabledButton :
+                            !props.disabled ?
+                                pressed
+                                    ? COLORS.paleBlue
+                                    : COLORS.mainBlue
+                                : COLORS.disabledButton,
                 paddingVertical: props.verticalPadding,
             },
             styles.button

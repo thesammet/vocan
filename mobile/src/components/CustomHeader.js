@@ -26,7 +26,7 @@ const HomeBasicHeader = ({
             {isNavBack ? (
                 <View style={styles.container} {...props}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <TouchableOpacity onPress={() => { forwardBack }} activeOpacity={0.8} style={{ marginRight: 4 }}>
+                        <TouchableOpacity onPress={() => { forwardBack() }} activeOpacity={0.8} style={{ marginRight: 4 }}>
                             <ChevronLeft width={32} height={32} color="#124BDC" />
                         </TouchableOpacity>
                         <Text
