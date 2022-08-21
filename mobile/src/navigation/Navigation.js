@@ -15,7 +15,7 @@ const Navigation = () => {
     }, []);
     return (
         <NavigationContainer>
-            <View style={{ flex: 1 }}>{true ? <Tabs /> : <Auth />}</View>
+            <View style={{ flex: 1 }}>{token ? <Tabs /> : <Auth />}</View>
         </NavigationContainer >
     );
 }

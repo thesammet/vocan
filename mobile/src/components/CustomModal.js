@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import Modal from "react-native-modal";
 import {
     Text,
@@ -8,9 +8,11 @@ import {
 import CustomButton from './CustomButton';
 import { COLORS } from '../utils/colors'
 import TYPOGRAPHY from '../utils/typography'
+import { AuthContext } from '../context/Auth';
 
 const CustomModal = (props) => {
     const windowHeight = Dimensions.get('window').height;
+    const { removeToken } = useContext(AuthContext);
     return (
         <Modal isVisible={props.isModalVisible} >
             <View style={{ backgroundColor: COLORS.modalBg, marginHorizontal: 32, borderRadius: 20 }}>
@@ -21,7 +23,7 @@ const CustomModal = (props) => {
                             verticalPadding={windowHeight / 50}
                             title={"Log out"}
                             onPress={() => {
-                                console.log("Logout")
+                                removeToken()
                             }}
                             disabled={false} />
                         <View height={16} />

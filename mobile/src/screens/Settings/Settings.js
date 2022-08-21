@@ -26,6 +26,7 @@ const SettingsScreen = ({ navigation }) => {
     const togglePasswordModal = () => {
         setPasswordModalVisible(!isPasswordModalVisible);
     };
+
     return (
         <View style={styles.container}>
             <HomeBasicHeader

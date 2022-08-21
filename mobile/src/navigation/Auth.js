@@ -2,12 +2,14 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../screens/Login/Login';
 import Register from '../screens/Register/Register';
+import FlashMessage from 'react-native-flash-message';
 
 const Stack = createNativeStackNavigator();
 
 const Auth = () => {
     return (
         <>
+            <FlashMessage position="bottom" floating={true} />
             <Stack.Navigator
                 initialRouteName="Login"
                 screenOptions={{

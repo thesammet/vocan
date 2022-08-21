@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { CustomTextInputMultiline, CustomTextInputPassword } from '../../components/CustomInputText';
 import {
     StyleSheet,
@@ -12,9 +12,8 @@ import { COLORS } from '../../utils/colors'
 import TYPOGRAPHY from '../../utils/typography'
 import { VocanIcon } from '../../components/icons';
 import CustomButton from '../../components/CustomButton';
-
-//country
-import CountryPicker from 'react-native-country-picker-modal'
+import { registerUser } from '../../api/user';
+import { AuthContext } from '../../context/Auth';
 
 const Register = ({ navigation }) => {
     const [username, onChangeUsername] = useState(null)
@@ -22,22 +21,25 @@ const Register = ({ navigation }) => {
     const [password, onChangePassword] = useState(null)
     const [passwordAgain, onChangePasswordAgain] = useState(null)
     const [pageNumber, setPageNumber] = useState(1)
-    //country
-    const [countryCode, setCountryCode] = useState('US')
-    const [country, setCountry] = useState(null)
+    const [isLoading, setIsLoading] = useState(false);
+    const { addToken } = useContext(AuthContext)
 
-    const [withCountryNameButton, setWithCountryNameButton] = useState(
-        false,
-    )
-    const [withFlag, setWithFlag] = useState(true)
-    const [withEmoji, setWithEmoji] = useState(true)
-    const [withFilter, setWithFilter] = useState(true)
-    const [withAlphaFilter, setWithAlphaFilter] = useState(true)
-    const [withCallingCode, setWithCallingCode] = useState(false)
-    const onSelect = (country) => {
-        setCountryCode(country.cca2)
-        setCountry(country)
-    }
+    const register = async () => {
+        setIsLoading(true);
+        let response = await registerUser(username, email, password);
+        console.log(response)
+        setIsLoading(false);
+
+        if (response.error) {
+            setIsLoading(false);
+            customFailMessage(
+                "Could not register."
+            );
+        } else {
+            console.log(JSON.stringify(response))
+            addToken(response.token);
+        }
+    };
     return (
         <View style={styles.mainContainer}>
             <TouchableOpacity
@@ -63,60 +65,36 @@ const Register = ({ navigation }) => {
                             value={email} />
                     </View>
                         :
-                        pageNumber == 2 ?
-                            <View style={styles.inputGroup}>
-                                <CustomTextInputPassword
-                                    placeholder={"Create Password"}
-                                    maxLength={30}
-                                    onChangeText={password => onChangePassword(password)}
-                                    value={password} />
-                                <CustomTextInputPassword
-                                    placeholder={"Enter your password again"}
-                                    maxLength={40}
-                                    onChangeText={passwordAgain => onChangePasswordAgain(passwordAgain)}
-                                    value={passwordAgain} />
-                            </View> :
-                            <View style={styles.container}>
 
-                                <Text style={[TYPOGRAPHY.H3Bold, { color: 'white', marginTop: 16 }]}>Please select the flag of the country you want to translate</Text>
-                                <Text style={[TYPOGRAPHY.H6Regular, { color: 'white', marginTop: 2 }]}>(You can change it later in the settings tab.)</Text>
-
-                                <View style={styles.countryPickerView}>
-                                    <CountryPicker
-                                        {...{
-                                            countryCode,
-                                            withFilter,
-                                            withFlag,
-                                            withCountryNameButton,
-                                            withAlphaFilter,
-                                            withCallingCode,
-                                            withEmoji,
-                                            onSelect,
-                                        }}
-                                    />
-                                    {country == null ?
-                                        <Text style={[TYPOGRAPHY.H4Semibold, , { color: 'white', marginTop: 4, marginBottom: 16 }]}>{"US / United States"}</Text> :
-                                        <Text style={[TYPOGRAPHY.H4Semibold, , { color: 'white', marginTop: 4, marginBottom: 16 }]}>{country.cca2 + " / " + country.name}</Text>
-                                    }
-                                </View>
-
-                            </View>}
+                        <View style={styles.inputGroup}>
+                            <CustomTextInputPassword
+                                placeholder={"Create Password"}
+                                maxLength={30}
+                                onChangeText={password => onChangePassword(password)}
+                                value={password} />
+                            <CustomTextInputPassword
+                                placeholder={"Enter your password again"}
+                                maxLength={40}
+                                onChangeText={passwordAgain => onChangePasswordAgain(passwordAgain)}
+                                value={passwordAgain} />
+                        </View>}
                 </KeyboardAvoidingView >
                 <View>
                     <View style={styles.circleGroup}>
                         <View style={[styles.circle, { backgroundColor: pageNumber == 1 ? COLORS.mainBlue : COLORS.inputBorder }]} />
                         <View style={[styles.circle, { backgroundColor: pageNumber == 2 ? COLORS.mainBlue : COLORS.inputBorder }]} />
-                        <View style={[styles.circle, { backgroundColor: pageNumber == 3 ? COLORS.mainBlue : COLORS.inputBorder }]} />
                     </View>
 
-                    <CustomButton
-                        verticalPadding={20}
-                        title={pageNumber == 3 ? "Complete" : "Continue"}
-                        onPress={() => {
-                            pageNumber != 3 &&
-                                setPageNumber(pageNumber + 1)
-                        }}
-                        disabled={pageNumber == 1 ? !username || !email : pageNumber == 2 ? !password || !passwordAgain || password != passwordAgain : false} />
+                    {isLoading ?
+                        <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>Account is being creating...</Text>
+                        : <CustomButton
+                            verticalPadding={20}
+                            title={pageNumber == 2 ? "Complete" : "Continue"}
+                            onPress={() => {
+                                pageNumber != 2 ?
+                                    setPageNumber(pageNumber + 1) : register()
+                            }}
+                            disabled={pageNumber == 1 ? !username || !email : pageNumber == 2 && !password || !passwordAgain || password != passwordAgain} />}
                     <View style={styles.dontHaveAnAccount}>
                         <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>I already have an account</Text>
                         <TouchableOpacity

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
     Text, View, StyleSheet, TouchableOpacity, FlatList
 } from 'react-native';
@@ -10,12 +10,13 @@ import FavItem from '../components/FavItem';
 import { getAllWordsHistory, getWordById, favouriteWord, getFavouriteWords, deleteWord } from '../api/word';
 import Loading from '../components/Loading'
 import { Slash, Trash } from '../components/icons'
+import { AuthContext } from '../context/Auth'
 
 const HistoryFav = ({ navigation }) => {
     const [historyFavPicker, setHistoryFavPicker] = useState(1)
     const [historyData, setHistoryData] = useState([])
     const [favData, setFavData] = useState([])
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzAyMzdhM2UxMjY4MmI1ZTNiNzBjMWYiLCJpYXQiOjE2NjEwODk4NzR9.8Hy_U44EFZpaNaEyjdG0AQzVwnTICapax66vzJHz9Ss"
+    const { token } = useContext(AuthContext)
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingFav, setIsLoadingFav] = useState(false);
 

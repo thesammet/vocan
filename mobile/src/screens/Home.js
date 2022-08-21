@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import {
     Text, View, StyleSheet, TouchableOpacity, Keyboard, Dimensions, FlatList
 } from 'react-native';
@@ -14,6 +14,8 @@ import { languages } from '../assets/sources/languages'
 import { LanguageContext } from '../context/Language';
 import { translateWord } from '../api/word';
 import { Capitalize, checkText } from '../utils/helper_functions'
+import { AuthContext } from '../context/Auth';
+
 const Home = ({ navigation }) => {
     //async
     const { mainLanguage, addMainLanguage, translatedLanguage, addTranslatedLanguage } = useContext(LanguageContext)
@@ -23,8 +25,8 @@ const Home = ({ navigation }) => {
     const bottomSheet = useRef();
     const windowHeight = Dimensions.get('window').height
     const selectedLanguage = languageSelector === 1 ? mainLanguage.code : translatedLanguage.code
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzAyMzdhM2UxMjY4MmI1ZTNiNzBjMWYiLCJpYXQiOjE2NjEwODk4NzR9.8Hy_U44EFZpaNaEyjdG0AQzVwnTICapax66vzJHz9Ss"
     let translatedLanguages = languages.filter((_, i) => i > 0)
+    const { token } = useContext(AuthContext)
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -86,7 +88,8 @@ const Home = ({ navigation }) => {
                             title={"Translate"}
                             onPress={async () => {
                                 const res = await translateWord(token, text, mainLanguage.code, translatedLanguage.code)
-                                setMean(Capitalize(res.myWord.mean))
+                                console.log(JSON.stringify(res))
+                                setMean(Capitalize(res.data.mean))
                             }}
                             disabled={!text} />
                     </View>

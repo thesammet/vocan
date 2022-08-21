@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { CustomTextInputMultiline, CustomTextInputPassword } from '../../components/CustomInputText';
 import {
     StyleSheet,
@@ -13,11 +13,34 @@ import { COLORS } from '../../utils/colors'
 import TYPOGRAPHY from '../../utils/typography'
 import CustomButton from '../../components/CustomButton';
 import { VocanIconTextGroup } from '../../components/icons';
+import { loginUser } from '../../api/user';
+import { AuthContext } from '../../context/Auth';
+import { customFailMessage } from '../../utils/show_messages';
 
 const Login = ({ navigation }) => {
-    const [username, onChangeUsername] = useState(null)
+    const [email, onChangeEmail] = useState(null)
     const [password, onChangePassword] = useState(null)
     const [rememberMeSwitchValue, setRememberMeSwitchValue] = useState(false)
+    const { addToken } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const login = async () => {
+        setIsLoading(true);
+        let response = await loginUser(email, password);
+        console.log(response)
+        setIsLoading(false);
+
+        if (response.error) {
+            setIsLoading(false);
+            customFailMessage(
+                "You have entered an invalid username or password"
+            );
+        } else {
+            addToken(response.token);
+        }
+    };
+
+
     return (
         <TouchableOpacity
             onPress={Keyboard.dismiss}
@@ -30,10 +53,10 @@ const Login = ({ navigation }) => {
 
                 <View style={styles.inputGroup}>
                     <CustomTextInputMultiline
-                        placeholder={"Username"}
+                        placeholder={"Email"}
                         maxLength={30}
-                        onChangeText={username => onChangeUsername(username)}
-                        value={username} />
+                        onChangeText={email => onChangeEmail(email)}
+                        value={email} />
                     <CustomTextInputPassword
                         placeholder={"Password"}
                         maxLength={40}
@@ -63,13 +86,16 @@ const Login = ({ navigation }) => {
                 </View>
             </KeyboardAvoidingView >
             <View style={{ marginHorizontal: 44 }}>
-                <CustomButton
-                    verticalPadding={20}
-                    title={"Login"}
-                    onPress={() => {
-                        console.log(username + " " + password)
-                    }}
-                    disabled={!username || !password} />
+                {isLoading ?
+                    <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>Loading...</Text>
+                    :
+                    <CustomButton
+                        verticalPadding={20}
+                        title={"Login"}
+                        onPress={() => {
+                            login()
+                        }}
+                        disabled={!email || !password} />}
                 <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, alignSelf: 'center', marginBottom: 12, marginTop: 32 }]}>Forgot your password?</Text>
                 <View style={styles.dontHaveAnAccount}>
                     <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>Don't have an account?</Text>

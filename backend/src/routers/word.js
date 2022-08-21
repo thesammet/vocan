@@ -10,13 +10,13 @@ router.post('/words', auth, async (req, res) => {
     const mean = translateObject.translation
     const translated = `${req.body.from == "auto-detect" ? translateObject.toString().includes("Error") ? "Not Supported" : translateObject.language.from : req.body.from}-${req.body.to}`
     const myWord = new Word({ ...req.body, owner: req.user._id, mean, translated })
-    const savedWord = await Word.findOne({ main: req.body.main })
+    const savedWord = await Word.findOne({ main: req.body.main, owner: req.user._id })
 
     try {
 
         if (!savedWord && !translateObject.toString().includes("Error")) {
             await myWord.save()
-            return res.status(201).send({ myWord })
+            return res.status(201).send({ data: myWord })
         }
         res.status(200).send({ data: myWord })
     } catch (error) {
