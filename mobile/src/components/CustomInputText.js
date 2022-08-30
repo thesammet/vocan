@@ -59,7 +59,6 @@ export const CustomTextInputPassword = (props) => {
                     Keyboard.dismiss
                 }
                 }
-                rightIcon={<Text style={{ color: 'white' }}>shoo</Text>}
                 backgroundColor={COLORS.inputBg}
                 placeholderTextColor={COLORS.inputHintText}
                 placeholder={props.placeholder}
@@ -74,10 +73,6 @@ export const CustomTextInputPassword = (props) => {
                     color: COLORS.white,
                 }]}
             />
-            {/* <Pressable onPress={handlePasswordVisibility}>
-                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.white, marginRight: 16, marginBottom: 16, alignSelf: 'flex-end' }]}>{passwordVisibility ? 'Show Password' : 'Hide Password'}</Text>
-            </Pressable>
- */}
         </View >
     );
 }

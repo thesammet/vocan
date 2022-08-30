@@ -1,5 +1,4 @@
 import { BASE_URL } from "@env"
-const baseURL = process.env.BASE_URL
 
 export const registerUser = async (
     username,
@@ -8,7 +7,7 @@ export const registerUser = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/users`, {
+        const response = await fetch(`${BASE_URL}/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +35,7 @@ export const loginUser = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/users/login`, {
+        const response = await fetch(`${BASE_URL}/users/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +60,7 @@ export const getAllUsers = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/users`, {
+        const response = await fetch(`${BASE_URL}/users`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,7 +82,7 @@ export const getProfile = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/users/me`, {
+        const response = await fetch(`${BASE_URL}/users/me`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -106,7 +105,7 @@ export const updateUser = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/users/me`, {
+        const response = await fetch(`${BASE_URL}/users/me`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -129,7 +128,7 @@ export const deleteUser = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/users/me`, {
+        const response = await fetch(`${BASE_URL}/users/me`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -142,6 +141,26 @@ export const deleteUser = async (
         return json;
     } catch (error) {
         console.log('Delete User Error: ', error);
+        return { error: true };
+    }
+};
+
+export const wordHistory = async (
+    token,
+) => {
+    try {
+        const response = await fetch(`${BASE_URL}/word-history`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        const json = await response.json();
+        console.log(json)
+        return json;
+    } catch (error) {
+        console.log('Word History Change Error: ', error);
         return { error: true };
     }
 };

@@ -1,5 +1,4 @@
 import { BASE_URL } from "@env"
-const baseURL = process.env.BASE_URL
 
 export const translateWord = async (
     token,
@@ -9,7 +8,7 @@ export const translateWord = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/words`, {
+        const response = await fetch(`${BASE_URL}/words`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -35,7 +34,7 @@ export const getAllWordsHistory = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/words`, {
+        const response = await fetch(`${BASE_URL}/words`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +56,7 @@ export const getWordById = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/words/${id}`, {
+        const response = await fetch(`${BASE_URL}/words/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,7 +78,7 @@ export const favouriteWord = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/words/${id}`, {
+        const response = await fetch(`${BASE_URL}/words/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -100,7 +99,7 @@ export const getFavouriteWords = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/favourites`, {
+        const response = await fetch(`${BASE_URL}/favourites`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -122,7 +121,7 @@ export const deleteWord = async (
 ) => {
 
     try {
-        const response = await fetch(`${baseURL}/words/${id}`, {
+        const response = await fetch(`${BASE_URL}/words/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

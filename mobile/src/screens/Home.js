@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import {
     Text, View, StyleSheet, TouchableOpacity, Keyboard, Dimensions, FlatList
 } from 'react-native';
@@ -13,11 +13,12 @@ import BottomSheet from 'react-native-gesture-bottom-sheet';
 import { languages } from '../assets/sources/languages'
 import { LanguageContext } from '../context/Language';
 import { translateWord } from '../api/word';
-import { Capitalize, checkText } from '../utils/helper_functions'
+import { Capitalize } from '../utils/helper_functions'
 import { AuthContext } from '../context/Auth';
+import { strings, onSetLanguageToItalianon } from '../utils/localization';
+import { customFailMessage, customInfoMessage, customSuccessMessage } from '../utils/show_messages';
 
 const Home = ({ navigation }) => {
-    //async
     const { mainLanguage, addMainLanguage, translatedLanguage, addTranslatedLanguage } = useContext(LanguageContext)
     const [text, setText] = useState("")
     const [mean, setMean] = useState("")
@@ -25,6 +26,7 @@ const Home = ({ navigation }) => {
     const bottomSheet = useRef();
     const windowHeight = Dimensions.get('window').height
     const selectedLanguage = languageSelector === 1 ? mainLanguage.code : translatedLanguage.code
+    const [loading, setLoading] = useState(null)
     let translatedLanguages = languages.filter((_, i) => i > 0)
     const { token } = useContext(AuthContext)
 
@@ -38,8 +40,23 @@ const Home = ({ navigation }) => {
                 </View>
             </View>
         </TouchableOpacity>
-
     );
+
+    const translateMethod = async () => {
+        setLoading(true)
+        try {
+            const response = await translateWord(token, text, mainLanguage.code, translatedLanguage.code)
+            if (response.error) {
+                customFailMessage(strings.customFailMessage1)
+            } else {
+                setMean(response.data.mean)
+            }
+        } catch (error) {
+            customFailMessage(strings.customFailMessage1)
+        }
+        setLoading(false)
+    }
+
     return (
         <TouchableOpacity activeOpacity={1} onPress={Keyboard.dismiss} style={styles.keyboarDismissContainer}>
             <View style={styles.container}>
@@ -52,7 +69,7 @@ const Home = ({ navigation }) => {
                 </BottomSheet>
                 <HomeBasicHeader
                     navigation={navigation}
-                    title="Translate Area"
+                    title={strings.translateArea}
                     isNavBack={false}
                 />
                 <View style={styles.searchView}>
@@ -63,7 +80,11 @@ const Home = ({ navigation }) => {
                                 <ChevronDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ marginHorizontal: 10 }} activeOpacity={0.5} onPress={() => { addMainLanguage(translatedLanguage); addTranslatedLanguage(mainLanguage); }}>
+                        <TouchableOpacity style={{ marginHorizontal: 10 }} activeOpacity={0.5} onPress={() => {
+                            if (mainLanguage.code != "auto-detect") {
+                                addMainLanguage(translatedLanguage); addTranslatedLanguage(mainLanguage);
+                            }
+                        }}>
                             <Swap width={24} height={24} fill={mainLanguage.code != "auto-detect" ? COLORS.mainBlue : COLORS.inputHintText} />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.languageSelectView} activeOpacity={0.5} onPress={() => { setLanguageSelector(2); bottomSheet.current.show(); }}>
@@ -73,9 +94,8 @@ const Home = ({ navigation }) => {
                             </View>
                         </TouchableOpacity>
                     </View>
-
                     <InputArea
-                        placeholder={'Enter text'}
+                        placeholder={strings.enterText}
                         value={text}
                         onChangeText={(value) => setText(value)}
                         edit={true}
@@ -85,20 +105,16 @@ const Home = ({ navigation }) => {
                     <View style={{ marginVertical: 16 }}>
                         <TranslateButton
                             verticalPadding={16}
-                            title={"Translate"}
-                            onPress={async () => {
-                                const res = await translateWord(token, text, mainLanguage.code, translatedLanguage.code)
-                                console.log(JSON.stringify(res))
-                                setMean(Capitalize(res.data.mean))
-                            }}
-                            disabled={!text} />
+                            title={loading ? strings.loading : strings.translate}
+                            onPress={() => translateMethod()}
+                            disabled={!text || loading} />
                     </View>
                     <InputArea
-                        placeholder={'Translation'}
+                        placeholder={strings.translation}
                         editable={false}
                         edit={false}
                         selectTextOnFocus={false}
-                        text={mean}
+                        text={Capitalize(mean)}
                     />
                 </View>
             </View>

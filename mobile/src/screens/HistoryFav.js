@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-    Text, View, StyleSheet, TouchableOpacity, FlatList
+    Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator
 } from 'react-native';
 import TYPOGRAPHY from '../utils/typography'
 import { COLORS } from '../utils/colors'
@@ -10,37 +10,43 @@ import { getAllWordsHistory, favouriteWord, getFavouriteWords } from '../api/wor
 import { AuthContext } from '../context/Auth'
 import NoWordView from '../components/NoWordView';
 import { customFailMessage } from '../utils/show_messages';
+import { strings } from '../utils/localization';
 
 const HistoryFav = ({ navigation }) => {
     const [historyFavPicker, setHistoryFavPicker] = useState(1)
     const [historyData, setHistoryData] = useState([])
     const [favData, setFavData] = useState([])
     const { token } = useContext(AuthContext)
+    const [loadingHistory, setLoadingHistory] = useState(null)
+    const [loadingFav, setLoadingFav] = useState(null)
 
     const getAllWords = async () => {
+        setLoadingHistory(true)
         let response = await getAllWordsHistory(token);
         if (response.error) {
-            customFailMessage("Something went wrong!")
+            customFailMessage(strings.customFailMessage1)
         } else {
             setHistoryData(response.data)
         }
+        setLoadingHistory(false)
     };
 
     const getAllFavourites = async () => {
+        setLoadingFav(true)
         let response = await getFavouriteWords(token);
         if (response.error) {
-            customFailMessage("Something went wrong!")
+            customFailMessage(strings.customFailMessage1)
         } else {
             setFavData(response.data);
         }
+        setLoadingFav(false)
     };
 
     const postToFavourite = async (id) => {
         let response = await favouriteWord(token, id);
         if (response.error) {
-            customFailMessage("Something went wrong!")
+            customFailMessage(strings.customFailMessage1)
         } else {
-            //customSuccessMessage(response.data.fav == true ? "Added to favourites" : "Removed from favorites")
             console.log(response.data.fav)
         }
     };
@@ -66,40 +72,43 @@ const HistoryFav = ({ navigation }) => {
         <View style={styles.container}>
             <HomeBasicHeader
                 navigation={navigation}
-                title="History/Fav"
+                title={strings.historyFav}
                 isNavBack={false}
             />
             <View style={[styles.historyFavGroup, { backgroundColor: COLORS.inputBg }]}>
                 <TouchableOpacity activeOpacity={.5} style={{ width: '50%' }} onPress={() => { setHistoryFavPicker(1); getAllWords() }}>
                     <View style={{ padding: 16, backgroundColor: historyFavPicker == 1 ? COLORS.pickedFavHisColor : 'transparent', borderRadius: historyFavPicker == 1 ? 16 : 0, }}>
-                        <Text style={[historyFavPicker == 1 ? TYPOGRAPHY.H5Regular : TYPOGRAPHY.H5Bold, { color: historyFavPicker == 1 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center' }]}>History</Text>
+                        <Text style={[historyFavPicker == 1 ? TYPOGRAPHY.H5Regular : TYPOGRAPHY.H5Bold, { color: historyFavPicker == 1 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center' }]}>{strings.history}</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={.5} style={{ width: '50%', }} onPress={() => { setHistoryFavPicker(2); getAllFavourites() }}>
                     <View style={{ padding: 16, backgroundColor: historyFavPicker == 2 ? COLORS.pickedFavHisColor : 'transparent', borderRadius: historyFavPicker == 2 ? 16 : 0, }}>
-                        <Text style={[historyFavPicker == 2 ? TYPOGRAPHY.H5Regular : TYPOGRAPHY.H5Bold, { color: historyFavPicker == 2 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center' }]}>Favorite</Text>
+                        <Text style={[historyFavPicker == 2 ? TYPOGRAPHY.H5Regular : TYPOGRAPHY.H5Bold, { color: historyFavPicker == 2 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center' }]}>{strings.favorite}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
             {historyFavPicker == 1 ?
-
-                historyData.length == 0 ?
-                    <NoWordView subject={"history"} />
-                    :
-                    <FlatList
-                        data={historyData}
-                        renderItem={renderItem}
-                        keyExtractor={item => item._id}
-                    />
+                loadingHistory ?
+                    <ActivityIndicator /> :
+                    historyData.length == 0 ?
+                        <NoWordView subject={strings.history} />
+                        :
+                        <FlatList
+                            data={historyData}
+                            renderItem={renderItem}
+                            keyExtractor={item => item._id}
+                        />
                 :
-                favData.length == 0 ?
-                    <NoWordView subject={"favourite"} />
+                loadingFav ?
+                    <ActivityIndicator />
                     :
-                    <FlatList
-                        data={favData}
-                        renderItem={renderItem}
-                        keyExtractor={item => item._id}
-                    />}
+                    favData.length == 0 ?
+                        <NoWordView subject={strings.favorite} /> :
+                        <FlatList
+                            data={favData}
+                            renderItem={renderItem}
+                            keyExtractor={item => item._id}
+                        />}
         </View>
     )
 }

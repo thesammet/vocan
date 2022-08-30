@@ -9,6 +9,7 @@ import CustomButton from './CustomButton';
 import { COLORS } from '../utils/colors'
 import TYPOGRAPHY from '../utils/typography'
 import { CustomTextInputPassword } from '../components/CustomInputText';
+import { strings } from '../utils/localization';
 
 const PasswordModal = (props) => {
     const windowHeight = Dimensions.get('window').height;
@@ -19,7 +20,7 @@ const PasswordModal = (props) => {
                 <View style={{ marginHorizontal: 32, marginTop: 40, bottom: 16 }}>
                     <Text style={[TYPOGRAPHY.H3Regular, { color: COLORS.white, textAlign: 'center', marginBottom: 20 }]}>{props.title}</Text>
                     <CustomTextInputPassword
-                        placeholder={"Password"}
+                        placeholder={strings.password}
                         maxLength={30}
                         onChangeText={password => onChangePassword(password)}
                         value={password} />
@@ -27,7 +28,7 @@ const PasswordModal = (props) => {
                         <View style={{ width: '50%' }}>
                             <CustomButton
                                 verticalPadding={windowHeight / 50}
-                                title={"Cancel"}
+                                title={strings.cancel}
                                 onPress={() => {
                                     props.toggleModal()
                                 }}
@@ -37,7 +38,7 @@ const PasswordModal = (props) => {
                         <View style={{ width: '50%' }}>
                             <CustomButton
                                 verticalPadding={windowHeight / 50}
-                                title={"Edit "}
+                                title={strings.edit + " "}
                                 onPress={
                                     props.navigateToPage
                                 }

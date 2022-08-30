@@ -5,12 +5,13 @@ import {
 import { Slash } from '../components/icons'
 import TYPOGRAPHY from '../utils/typography'
 import { COLORS } from '../utils/colors'
+import { strings } from '../utils/localization'
 
 const NoWordView = (props) => {
     return (
         <View style={styles.emptyView}>
             <Slash width={100} height={100} color={COLORS.paleBlue}></Slash>
-            <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.inputHintText, alignSelf: 'center', marginTop: 8 }]}>You have no {props.subject} word</Text>
+            <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.inputHintText, alignSelf: 'center', marginTop: 8 }]}>{strings.noWord}{props.subject}</Text>
         </View>
     )
 }

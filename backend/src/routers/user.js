@@ -37,13 +37,23 @@ router.patch('/users/me', auth, async (req, res) => {
     if (!isValidOperation) {
         return res.status(400).send({ error: 'Invalid updates!' })
     }
-
     try {
         updates.forEach((update) => req.user[update] = req.body[update])
         await req.user.save()
         res.status(200).send(req.user)
     } catch (error) {
-        res.status(400).send(error)
+        res.status(400).send({ error })
+    }
+})
+
+router.patch('/word-history', auth, async (req, res) => {
+    try {
+        req.user.history = !req.user.history
+        await req.user.save()
+        res.status(200).send({ data: { history: req.user.history } })
+        res.status
+    } catch (error) {
+
     }
 })
 

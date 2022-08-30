@@ -284,6 +284,8 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    compile project(':react-native-localization')
 }
 
 if (isNewArchitectureEnabled()) {

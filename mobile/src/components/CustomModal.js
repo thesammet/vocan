@@ -9,6 +9,7 @@ import CustomButton from './CustomButton';
 import { COLORS } from '../utils/colors'
 import TYPOGRAPHY from '../utils/typography'
 import { AuthContext } from '../context/Auth';
+import { strings } from '../utils/localization';
 
 const CustomModal = (props) => {
     const windowHeight = Dimensions.get('window').height;
@@ -21,7 +22,7 @@ const CustomModal = (props) => {
                     <View style={{ marginTop: 48 }}>
                         <CustomButton
                             verticalPadding={windowHeight / 50}
-                            title={"Log out"}
+                            title={strings.signOut}
                             onPress={() => {
                                 removeToken()
                             }}
@@ -29,7 +30,7 @@ const CustomModal = (props) => {
                         <View height={16} />
                         <CustomButton
                             verticalPadding={windowHeight / 50}
-                            title={"Cancel"}
+                            title={strings.cancel}
                             onPress={() => {
                                 props.toggleModal()
                             }}

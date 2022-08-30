@@ -2,15 +2,16 @@ import React from 'react'
 import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { COLORS } from '../utils/colors'
 import TYPOGRAPHY from '../utils/typography'
+import { strings } from '../utils/localization';
 
 const CustomButton = (props) => {
     return (
         <Pressable style={({ pressed }) => [
             {
                 backgroundColor:
-                    props.title == "Delete Account" ?
+                    props.title == strings.deleteAccount ?
                         COLORS.pickedFavHisColor :
-                        props.title == "Edit" || props.title == "Sign Out" || props.title == "Cancel" ?
+                        props.title == strings.edit || props.title == strings.signOut || props.title == strings.cancel ?
                             COLORS.disabledButton :
                             !props.disabled ?
                                 pressed
@@ -23,7 +24,7 @@ const CustomButton = (props) => {
         ]}
             disabled={props.disabled}
             onPress={props.onPress}>
-            <Text style={[TYPOGRAPHY.H4Semibold, { color: props.title == "Edit" ? COLORS.switchInactiveCircleColor : COLORS.white }]}>{props.title}</Text>
+            <Text style={[TYPOGRAPHY.H4Semibold, { color: props.title == strings.edit ? COLORS.switchInactiveCircleColor : COLORS.white }]}>{props.title}</Text>
         </Pressable>
     )
 }

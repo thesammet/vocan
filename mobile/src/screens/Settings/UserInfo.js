@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     Text,
     View,
@@ -10,42 +10,95 @@ import { COLORS } from '../../utils/colors'
 import HomeBasicHeader from '../../components/CustomHeader';
 import CustomButton from '../../components/CustomButton';
 import { CustomTextInputMultiline } from '../../components/CustomInputText';
+import { AuthContext } from '../../context/Auth';
+import { updateUser, getProfile, deleteUser } from '../../api/user';
+import { customFailMessage, customInfoMessage, customSuccessMessage } from '../../utils/show_messages';
+import { strings } from '../../utils/localization';
 
 const UserInfo = ({ navigation }) => {
     const [username, onChangeUsername] = useState("thesammet")
     const [email, onChangeEmail] = useState("sameddakgul99@gmail.com")
+    const [profile, setProfile] = useState(null)
     const windowHeight = Dimensions.get('window').height;
+    const { token, removeToken } = useContext(AuthContext)
+
+    const updateUserMethod = async () => {
+        try {
+            let response = await updateUser(token, { username, email })
+            if (response.error) {
+                customFailMessage(strings.customFailMessage1)
+            } else {
+                customSuccessMessage(strings.customSuccessMessage2)
+                navigation.goBack()
+            }
+        } catch (error) {
+            customFailMessage(strings.customFailMessage1)
+        }
+    }
+
+    const deleteUser = async () => {
+        try {
+            let response = await deleteUser(token)
+            if (response.error) {
+                customFailMessage(strings.customFailMessage1)
+            } else {
+                removeToken()
+            }
+        } catch (error) {
+            customFailMessage(strings.customFailMessage1)
+        }
+    }
+
+
+    const getProfileMethod = async () => {
+        try {
+            let response = await getProfile(token)
+            if (response.error) {
+                customFailMessage(strings.customFailMessage2)
+            } else {
+                onChangeUsername(response.user.username)
+                onChangeEmail(response.user.email)
+            }
+        } catch (error) {
+            customFailMessage(strings.customFailMessage1)
+
+        }
+    }
+
+    useEffect(() => {
+        getProfileMethod()
+    }, []);
 
     return (
         <View style={styles.container}>
             <HomeBasicHeader
                 navigation={navigation}
-                title="Profile"
+                title={strings.profile}
                 isNavBack={true}
             />
             <View style={{ marginTop: 20, marginHorizontal: 44, justifyContent: 'space-between', flex: 1 }}>
                 <View>
-                    <Text style={[TYPOGRAPHY.H4Semibold, { color: COLORS.inputHintText, alignSelf: 'center' }]}>Username</Text>
+                    <Text style={[TYPOGRAPHY.H4Semibold, { color: COLORS.inputHintText, alignSelf: 'center' }]}>{strings.username}</Text>
                     <View style={{ height: 8 }} />
                     <CustomTextInputMultiline
                         maxLength={30}
                         onChangeText={username => onChangeUsername(username)}
                         value={username} />
                     <View style={{ height: 32 }} />
-                    <Text style={[TYPOGRAPHY.H4Semibold, { color: COLORS.inputHintText, alignSelf: 'center' }]}>Email</Text>
+                    <Text style={[TYPOGRAPHY.H4Semibold, { color: COLORS.inputHintText, alignSelf: 'center' }]}>{strings.email}</Text>
                     <View style={{ height: 8 }} />
                     <CustomTextInputMultiline
                         maxLength={30}
-                        onChangeText={email => onChangeUsername(email)}
+                        onChangeText={email => onChangeEmail(email)}
                         value={email} />
                 </View>
                 <View>
                     <View style={{ width: '100%', alignSelf: 'center', marginBottom: 24, }}>
                         <CustomButton
                             verticalPadding={windowHeight / 50}
-                            title={"Delete Account"}
+                            title={strings.deleteAccount}
                             onPress={
-                                () => { console.log("Delete Account") }
+                                () => { deleteUser() }
                             }
                             disabled={false} />
                     </View>
@@ -53,9 +106,8 @@ const UserInfo = ({ navigation }) => {
                         <View style={{ width: '50%' }}>
                             <CustomButton
                                 verticalPadding={windowHeight / 50}
-                                title={"Cancel"}
+                                title={strings.cancel}
                                 onPress={() => {
-                                    console.log("Cancel")
                                     navigation.goBack()
                                 }}
                                 disabled={false} />
@@ -64,9 +116,9 @@ const UserInfo = ({ navigation }) => {
                         <View style={{ width: '50%' }}>
                             <CustomButton
                                 verticalPadding={windowHeight / 50}
-                                title={"Update"}
+                                title={strings.update}
                                 onPress={
-                                    console.log("Update")
+                                    () => updateUserMethod()
                                 }
                                 disabled={false} />
                         </View>

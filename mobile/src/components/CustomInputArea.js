@@ -34,7 +34,6 @@ export const InputArea = (props) => {
                     props.text ?
                         <TouchableOpacity
                             onPress={() => {
-                                console.log("value null: " + props.text)
                                 props.clearText()
                             }
                             }>

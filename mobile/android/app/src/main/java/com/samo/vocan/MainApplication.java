@@ -12,6 +12,7 @@ import com.facebook.soloader.SoLoader;
 import com.samo.vocan.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -35,6 +36,14 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "index";
         }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+          return Arrays.<ReactPackage>asList(
+          new MainReactPackage(),
+          new ReactNativeLocalizationPackage()
+      );
+    }
       };
 
   private final ReactNativeHost mNewArchitectureNativeHost =

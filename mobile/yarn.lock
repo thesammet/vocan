@@ -5021,6 +5021,11 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.2.4.tgz"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
+localized-strings@^0.2.0:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/localized-strings/-/localized-strings-0.2.4.tgz#9d61c06b60cc7b5edf7c46e6c7f2d1ecb84aeb2c"
+  integrity sha512-TKDhqFPkIIN/if2FSvVVZTaM/GP9TzfgdQ2uY65mr32xgFu5nqkKXprXbzy5rfx32DF5LDvS/y1UqYF/mAscYA==
+
 locate-path@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/locate-path/-/locate-path-3.0.0.tgz"
@@ -6242,6 +6247,13 @@ react-is@^17.0.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-localization@^1.0.17:
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/react-localization/-/react-localization-1.0.19.tgz#b65a7fa58096cff6aa38bc3a0c4817ec97469ef0"
+  integrity sha512-f4E6T8xRis19K8qMOnnhjGV2quy1YH2lrSsnAiytvgt7uOSp6WgDhrZH6XZEaEFqupTOCFSf8uagIoIAkjl4JA==
+  dependencies:
+    localized-strings "^0.2.0"
+
 react-native-animatable@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
@@ -6311,6 +6323,13 @@ react-native-iphone-x-helper@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
+
+react-native-localization@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-localization/-/react-native-localization-2.3.1.tgz#b6752f16d2035bd4671fa5660c82941164e68b94"
+  integrity sha512-jmD6GEAGmstCIZOsxZcxWJbbx364c9qtKy8kefLcHYfAc73+g+e8CB7TZEwpK4IZNXxCBAeQMBsXfFrTyJmpWQ==
+  dependencies:
+    react-localization "^1.0.17"
 
 react-native-modal@^13.0.1:
   version "13.0.1"

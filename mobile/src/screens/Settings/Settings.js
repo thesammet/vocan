@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import {
     Text,
     View,
     StyleSheet,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList,
+    Platform,
+    NativeModules
 } from 'react-native';
 import TYPOGRAPHY from '../../utils/typography'
 import { COLORS } from '../../utils/colors'
@@ -14,10 +17,16 @@ import { ChevronRight } from '../../components/icons';
 import { Switch } from 'react-native-switch';
 import CustomModal from '../../components/CustomModal';
 import PasswordModal from '../../components/PasswordModal';
+import { getProfile, wordHistory } from '../../api/user';
+import { AuthContext } from '../../context/Auth';
+import { customFailMessage } from '../../utils/show_messages';
+import { strings } from '../../utils/localization';
+import { localizationLanguages } from '../../assets/sources/localization_languages'
+import BottomSheet from 'react-native-gesture-bottom-sheet';
 
 const SettingsScreen = ({ navigation }) => {
     const windowHeight = Dimensions.get('window').height;
-    const [rememberMeSwitchValue, setRememberMeSwitchValue] = useState(true)
+    const [rememberMeSwitchValue, setRememberMeSwitchValue] = useState(null)
     const [isModalVisible, setModalVisible] = useState(false);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -26,16 +35,88 @@ const SettingsScreen = ({ navigation }) => {
     const togglePasswordModal = () => {
         setPasswordModalVisible(!isPasswordModalVisible);
     };
+    const [username, setUsername] = useState(null)
+    const [email, setEmail] = useState(null)
+    const { token } = useContext(AuthContext)
+    const bottomSheet = useRef();
+    const [selectedLanguage, setSelectedLanguage] = useState(null)
+    //get device language
+    const deviceLanguage =
+        Platform.OS === 'ios'
+            ? NativeModules.SettingsManager.settings.AppleLocale ||
+            NativeModules.SettingsManager.settings.AppleLanguages[0]
+            : NativeModules.I18nManager.localeIdentifier;
+
+    const getProfileMethod = async () => {
+        try {
+            let response = await getProfile(token)
+            if (response.error) {
+                customFailMessage(strings.customFailMessage2)
+            } else {
+                setEmail(response.user.email)
+                setUsername(response.user.username)
+                setRememberMeSwitchValue(response.user.history)
+            }
+        } catch (error) {
+            customFailMessage(strings.customFailMessage1)
+        }
+    }
+
+    const wordHistoryMethod = async () => {
+        try {
+            let response = await wordHistory(token)
+            if (response.error) {
+                customFailMessage(strings.customFailMessage1)
+            } else {
+                setRememberMeSwitchValue(response.data.history)
+            }
+        } catch (error) {
+            customFailMessage(strings.customFailMessage1)
+        }
+    }
+
+    const renderLanguages = ({ item }) => (
+        <TouchableOpacity
+            onPress={() => console.log(item
+            .code)}>
+            <View style={styles.renderItem}>
+                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white, margin: 10, flex: 1 }]}>{item.name}</Text>
+                <View
+                    style={[styles.roundButton, { backgroundColor: item.code == selectedLanguage ? COLORS.mainBlue : 'transparent' }]}>
+                </View>
+            </View>
+        </TouchableOpacity>
+    );
+
+    useEffect(() => {
+        getProfileMethod()
+        setSelectedLanguage(deviceLanguage.split("_")[0])
+    }, [])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getProfileMethod()
+        });
+        return unsubscribe;
+    }, [navigation]);
+
 
     return (
         <View style={styles.container}>
             <HomeBasicHeader
                 navigation={navigation}
-                title="Settings"
+                title={strings.settings}
                 isNavBack={false}
             />
-            <CustomModal title={'Are you sure you want to log out?'} isModalVisible={isModalVisible} toggleModal={toggleModal} />
-            <PasswordModal title={'Enter your password to edit the profile.'} isModalVisible={isPasswordModalVisible} toggleModal={togglePasswordModal} navigateToPage={() => {
+            <BottomSheet hasDraggableIcon={false} ref={bottomSheet} height={windowHeight - windowHeight / 4.5} radius={32} sheetBackgroundColor={'#101010'} backgroundColor={'transparent'} draggable={false} >
+                <FlatList
+                    data={localizationLanguages}
+                    renderItem={renderLanguages}
+                    keyExtractor={item => item.code}
+                />
+            </BottomSheet>
+            <CustomModal title={strings.modal1} isModalVisible={isModalVisible} toggleModal={toggleModal} />
+            <PasswordModal title={strings.modal2} isModalVisible={isPasswordModalVisible} toggleModal={togglePasswordModal} navigateToPage={() => {
                 navigation.navigate('Password');
                 togglePasswordModal();
             }} />
@@ -44,14 +125,14 @@ const SettingsScreen = ({ navigation }) => {
 
                 <View>
                     <View style={styles.userInfoGroup}>
-                        <Text style={[TYPOGRAPHY.H2Semibold, { color: COLORS.white, alignSelf: 'center' }]}>SAMEDD</Text>
-                        <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText, alignSelf: 'center' }]}>samed99@gmail.com</Text>
+                        <Text style={[TYPOGRAPHY.H2Semibold, { color: COLORS.white, alignSelf: 'center' }]}>{username}</Text>
+                        <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText, alignSelf: 'center' }]}>{email}</Text>
                     </View>
 
                     <View style={{ width: '30%', alignSelf: 'center' }}>
                         <CustomButton
                             verticalPadding={8}
-                            title={"Edit"}
+                            title={strings.edit}
                             onPress={() => {
                                 navigation.navigate('UserInfo')
                             }}
@@ -60,26 +141,32 @@ const SettingsScreen = ({ navigation }) => {
                     <View style={[styles.dividerView, { borderBottomColor: COLORS.disabledButton }]}></View>
                     <TouchableOpacity activeOpacity={.5} onPress={() => navigation.navigate('Password')}>
                         <View style={[styles.settingsGroup, { marginBottom: 24 }]}>
-                            <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>Password</Text>
+                            <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{strings.password}</Text>
                             <ChevronRight width={28} height={28} color="#101010" />
                         </View>
                     </TouchableOpacity>
-                    <View style={{ marginBottom: 24 }}>
-                        <View style={styles.settingsGroup}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>Language</Text>
-                                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText }]}> (English)</Text>
+
+                    <TouchableOpacity activeOpacity={.5} onPress={() => bottomSheet.current.show()}>
+                        <View style={{ marginBottom: 24 }}>
+                            <View style={styles.settingsGroup}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{strings.language}</Text>
+                                    <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText }]}> ({deviceLanguage.split("_")[0].toUpperCase()})</Text>
+                                </View>
+                                <ChevronRight width={28} height={28} color="#101010" />
                             </View>
-                            <ChevronRight width={28} height={28} color="#101010" />
+                            <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText, marginLeft: 38 }]}>{strings.languageHint}</Text>
                         </View>
-                        <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText, marginLeft: 38 }]}>Language selected for translation</Text>
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={styles.settingsGroup}>
-                        <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>Show search history</Text>
+                        <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white, flex: 1 }]}>{strings.wordHistory}</Text>
                         <Switch
                             value={rememberMeSwitchValue}
-                            onValueChange={(val) => setRememberMeSwitchValue(val)}
+                            onValueChange={(val) => {
+                                setRememberMeSwitchValue(val);
+                                wordHistoryMethod()
+                            }}
                             circleSize={30}
                             barHeight={30}
                             circleBorderWidth={3}
@@ -99,7 +186,7 @@ const SettingsScreen = ({ navigation }) => {
                 <View style={{ marginBottom: 16, marginHorizontal: 48 }}>
                     <CustomButton
                         verticalPadding={windowHeight / 50}
-                        title={"Sign Out"}
+                        title={strings.signOut}
                         onPress={() => {
                             toggleModal()
                         }}
@@ -129,6 +216,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 38
+    },
+    renderItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: 32,
+        marginBottom: 8
+    },
+
+    roundButton: {
+        alignSelf: 'center',
+        width: 24,
+        height: 24,
+        borderRadius: 100,
+        borderColor: COLORS.switchInactiveCircleColor,
+        borderWidth: 1
     }
 })
 export default SettingsScreen

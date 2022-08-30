@@ -34,6 +34,11 @@ const userSchema = new mongoose.Schema({
         minLength: 8,
         trim: true,
     },
+    history: {
+        type: Boolean,
+        default: true,
+        required: true
+    },
     tokens: [{
         token: {
             type: String,
