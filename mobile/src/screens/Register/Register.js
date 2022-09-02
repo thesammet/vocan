@@ -14,6 +14,7 @@ import { VocanIcon } from '../../components/icons';
 import CustomButton from '../../components/CustomButton';
 import { registerUser } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
+import { validateEmail } from '../../utils/helper_functions';
 
 const Register = ({ navigation }) => {
     const [username, onChangeUsername] = useState(null)
@@ -40,6 +41,7 @@ const Register = ({ navigation }) => {
             addToken(response.token);
         }
     };
+
     return (
         <View style={styles.mainContainer}>
             <TouchableOpacity
@@ -65,7 +67,6 @@ const Register = ({ navigation }) => {
                             value={email} />
                     </View>
                         :
-
                         <View style={styles.inputGroup}>
                             <CustomTextInputPassword
                                 placeholder={"Create Password"}
@@ -94,7 +95,7 @@ const Register = ({ navigation }) => {
                                 pageNumber != 2 ?
                                     setPageNumber(pageNumber + 1) : register()
                             }}
-                            disabled={pageNumber == 1 ? !username || !email : pageNumber == 2 && !password || !passwordAgain || password != passwordAgain} />}
+                            disabled={pageNumber == 1 ? !validateEmail(email) || !username : pageNumber == 2 && !password || !passwordAgain || password != passwordAgain} />}
                     <View style={styles.dontHaveAnAccount}>
                         <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>I already have an account</Text>
                         <TouchableOpacity

@@ -25,11 +25,35 @@ router.post('/words', auth, async (req, res) => {
 })
 
 router.get('/words', auth, async (req, res) => {
+    //fav sort
+    const match = {}
+
+    // ascending-descending sort
+    const sort = {}
+
+    if (req.query.fav) {
+        match.fav = req.query.fav === 'true'
+    }
+
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':')
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+    }
+
     try {
-        const words = await Word.find({ owner: req.user._id })
-        res.status(200).send({ data: words })
+        await req.user.populate({
+            path: 'words',
+            match,
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip),
+                sort
+            }
+        })
+        res.status(200).send({ data: req.user.words })
     } catch (error) {
-        res.status(400).send()
+        console.log(error)
+        res.status(400).send({ error: "xx" })
     }
 })
 

@@ -16,6 +16,7 @@ import { VocanIconTextGroup } from '../../components/icons';
 import { loginUser } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
 import { customFailMessage } from '../../utils/show_messages';
+import { validateEmail } from '../../utils/helper_functions';
 
 const Login = ({ navigation }) => {
     const [email, onChangeEmail] = useState(null)
@@ -41,6 +42,7 @@ const Login = ({ navigation }) => {
     };
 
 
+
     return (
         <TouchableOpacity
             onPress={Keyboard.dismiss}
@@ -50,7 +52,6 @@ const Login = ({ navigation }) => {
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={{ marginHorizontal: 44 }}>
-
                 <View style={styles.inputGroup}>
                     <CustomTextInputMultiline
                         placeholder={"Email"}
@@ -95,7 +96,7 @@ const Login = ({ navigation }) => {
                         onPress={() => {
                             login()
                         }}
-                        disabled={!email || !password} />}
+                        disabled={!validateEmail(email) || password.length < 1} />}
                 <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, alignSelf: 'center', marginBottom: 12, marginTop: 32 }]}>Forgot your password?</Text>
                 <View style={styles.dontHaveAnAccount}>
                     <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>Don't have an account?</Text>

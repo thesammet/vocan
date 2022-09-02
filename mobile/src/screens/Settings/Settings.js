@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef, useCallback } from 'react';
 import {
     Text,
     View,
@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     FlatList,
     Platform,
-    NativeModules
+    NativeModules,
+    Linking
 } from 'react-native';
 import TYPOGRAPHY from '../../utils/typography'
 import { COLORS } from '../../utils/colors'
@@ -40,6 +41,7 @@ const SettingsScreen = ({ navigation }) => {
     const { token } = useContext(AuthContext)
     const bottomSheet = useRef();
     const [selectedLanguage, setSelectedLanguage] = useState(null)
+
     //get device language
     const deviceLanguage =
         Platform.OS === 'ios'
@@ -78,7 +80,7 @@ const SettingsScreen = ({ navigation }) => {
     const renderLanguages = ({ item }) => (
         <TouchableOpacity
             onPress={() => console.log(item
-            .code)}>
+                .code)}>
             <View style={styles.renderItem}>
                 <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white, margin: 10, flex: 1 }]}>{item.name}</Text>
                 <View
@@ -87,6 +89,11 @@ const SettingsScreen = ({ navigation }) => {
             </View>
         </TouchableOpacity>
     );
+
+    const _openAppSetting = useCallback(async () => {
+        // Open the custom settings if the app has one
+        await Linking.openSettings();
+    }, []);
 
     useEffect(() => {
         getProfileMethod()
@@ -146,7 +153,7 @@ const SettingsScreen = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity activeOpacity={.5} onPress={() => bottomSheet.current.show()}>
+                    <TouchableOpacity activeOpacity={.5} onPress={() => _openAppSetting()}>
                         <View style={{ marginBottom: 24 }}>
                             <View style={styles.settingsGroup}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -155,7 +162,8 @@ const SettingsScreen = ({ navigation }) => {
                                 </View>
                                 <ChevronRight width={28} height={28} color="#101010" />
                             </View>
-                            <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText, marginLeft: 38 }]}>{strings.languageHint}</Text>
+                            <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText, marginHorizontal: 38 }]}>{strings.languageHint
+                            }</Text>
                         </View>
                     </TouchableOpacity>
 
