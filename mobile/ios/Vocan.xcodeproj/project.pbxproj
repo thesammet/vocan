@@ -508,6 +508,7 @@
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-Vocan.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2K7T5T324Y;
@@ -526,6 +527,7 @@
 				PRODUCT_NAME = Vocan;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -535,6 +537,7 @@
 			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-Vocan.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2K7T5T324Y;
@@ -551,6 +554,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.SAMO.Vocan;
 				PRODUCT_NAME = Vocan;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

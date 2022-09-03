@@ -33,7 +33,12 @@ export let strings = new LocalizedStrings({
         modal2: "Enter your password to edit the profile.",
         customSuccessMessage1: "Password has been changed.",
         customSuccessMessage2: "User infromation has been changed.",
-        noWord: "You have no word: "
+        noWord: "You have no word: ",
+        result: "result found",
+        filter: "Filter",
+        standart: "Standart",
+        descending: "New to Old",
+        ascending: "Old to New"
     },
     tr: {
         translate: "Çevir",
@@ -67,6 +72,11 @@ export let strings = new LocalizedStrings({
         modal2: "Profili editlemek için şifrenizi girin",
         customSuccessMessage1: "Parolanız başarıyla değiştirildi.",
         customSuccessMessage2: "Kullanıcı bilgileri değiştirildi.",
-        noWord: "Hiç kelimeniz yok: "
+        noWord: "Hiç kelimeniz yok: ",
+        result: "sonuç bulundu.",
+        filter: "Filtre",
+        standart: "Standart",
+        descending: "Yeniden eskiye",
+        ascending: "Eskiden Yeniye"
     }
 });

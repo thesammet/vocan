@@ -30,11 +30,12 @@ export const translateWord = async (
 };
 
 export const getAllWordsHistory = async (
-    token
+    token,
+    params
 ) => {
 
     try {
-        const response = await fetch(`${BASE_URL}/words`, {
+        const response = await fetch(`${BASE_URL}/words?${params}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +96,7 @@ export const favouriteWord = async (
 };
 
 export const getFavouriteWords = async (
-    token
+    token,
 ) => {
 
     try {

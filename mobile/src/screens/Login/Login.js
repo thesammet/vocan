@@ -20,7 +20,7 @@ import { validateEmail } from '../../utils/helper_functions';
 
 const Login = ({ navigation }) => {
     const [email, onChangeEmail] = useState(null)
-    const [password, onChangePassword] = useState(null)
+    const [password, onChangePassword] = useState("")
     const [rememberMeSwitchValue, setRememberMeSwitchValue] = useState(false)
     const { addToken } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState(false);

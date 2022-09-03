@@ -11,5 +11,7 @@ export const COLORS = {
     paleBlue: '#2258e3',
     disabledButton: '#141414',
     pickedFavHisColor: '#202020',
-    modalBg: '#252525'
+    modalBg: '#252525',
+    filterItemBorder: '#202020',
+    filterItemText: '#D9D9D9'
 }
