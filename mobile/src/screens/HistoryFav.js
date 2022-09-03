@@ -44,7 +44,7 @@ const HistoryFav = ({ navigation }) => {
     };
 
     let alphabeticSorting = () => {
-        filterAlphabetic ? getAllWords() : setHistoryData([].concat(historyData).sort((a, b) => (a.main > b.main) ? 1 : -1))
+        filterAlphabetic ? setHistoryData([].concat(historyData).sort((a, b) => (b.main > a.main) ? 1 : -1)) : setHistoryData([].concat(historyData).sort((a, b) => (a.main > b.main) ? 1 : -1))
         setFilterAlphabetic(!filterAlphabetic)
     }
 

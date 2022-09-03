@@ -37,8 +37,8 @@ export let strings = new LocalizedStrings({
         result: "result found",
         filter: "Filter",
         standart: "Standart",
-        descending: "New to Old",
-        ascending: "Old to New"
+        descending: "Newest",
+        ascending: "Oldest"
     },
     tr: {
         translate: "Çevir",
@@ -76,7 +76,7 @@ export let strings = new LocalizedStrings({
         result: "sonuç bulundu.",
         filter: "Filtre",
         standart: "Standart",
-        descending: "Yeniden eskiye",
-        ascending: "Eskiden Yeniye"
+        descending: "Yeniler",
+        ascending: "Eskiler"
     }
 });
