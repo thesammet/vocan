@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-    Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator
+    Text, View, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Keyboard
 } from 'react-native';
 import TYPOGRAPHY from '../utils/typography'
 import { COLORS } from '../utils/colors'
@@ -71,6 +71,12 @@ const HistoryFav = ({ navigation }) => {
         }
     };
 
+    const searchOut = () => {
+        setSearchText('');
+        Keyboard.dismiss();
+        setFilteredData(historyData);
+    }
+
     useEffect(() => {
         getAllWords(historyFavPicker, filterDescending)
         const unsubscribe = navigation.addListener('focus', () => {
@@ -88,11 +94,19 @@ const HistoryFav = ({ navigation }) => {
             <View style={styles.customHeaderContainer}>
                 <Text style={styles.headerText}>{strings.historyFav}</Text>
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity activeOpacity={.5} onPress={() => { setSortingOption(1); sortingOption == 1 && setSortingOption(0) }}>
+                    <TouchableOpacity activeOpacity={.5} onPress={() => {
+                        setSortingOption(1);
+                        searchOut()
+                        sortingOption == 1 && setSortingOption(0)
+                    }}>
                         {sortingOption == 1 ? <FilterBold width="32" height="32" /> : <Filter width="32" height="32" />}
                     </TouchableOpacity>
                     <View style={{ width: 8 }} />
-                    <TouchableOpacity activeOpacity={.5} onPress={() => { setSortingOption(2); sortingOption == 2 && setSortingOption(0) }}>
+                    <TouchableOpacity activeOpacity={.5} onPress={() => {
+                        setSortingOption(2);
+                        searchOut()
+                        sortingOption == 2 && setSortingOption(0)
+                    }}>
                         {sortingOption == 2 ? <SearchBold width="32" height="32" /> : <Search width="32" height="32" />}
                     </TouchableOpacity>
                 </View>
@@ -115,7 +129,7 @@ const HistoryFav = ({ navigation }) => {
                             value={searchText}
                             onChangeText={(value) => { setSearchText(value); searchAlgorithm(value) }}
                             edit={true}
-                            clearText={() => { setSearchText('') }}
+                            clearText={() => { setSearchText(''); Keyboard.dismiss(); setFilteredData(historyData) }}
                             text={searchText}
                         />
                     </View>
@@ -123,12 +137,20 @@ const HistoryFav = ({ navigation }) => {
             }
 
             <View style={[styles.historyFavGroup, { backgroundColor: COLORS.inputBg }]}>
-                <TouchableOpacity activeOpacity={.5} style={{ width: '50%' }} onPress={() => { setHistoryFavPicker(1); getAllWords(1, filterDescending) }}>
+                <TouchableOpacity activeOpacity={.5} style={{ width: '50%' }} onPress={() => {
+                    setHistoryFavPicker(1)
+                    getAllWords(1, filterDescending)
+                    searchOut()
+                }}>
                     <View style={{ padding: 16, backgroundColor: historyFavPicker == 1 ? COLORS.pickedFavHisColor : 'transparent', borderRadius: historyFavPicker == 1 ? 16 : 0, }}>
                         <Text style={[historyFavPicker == 1 ? TYPOGRAPHY.H5Regular : TYPOGRAPHY.H5Bold, { color: historyFavPicker == 1 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center' }]}>{strings.history}</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={.5} style={{ width: '50%', }} onPress={() => { setHistoryFavPicker(2); getAllWords(2, filterDescending) }}>
+                <TouchableOpacity activeOpacity={.5} style={{ width: '50%', }} onPress={() => {
+                    setHistoryFavPicker(2)
+                    getAllWords(2, filterDescending)
+                    searchOut()
+                }}>
                     <View style={{ padding: 16, backgroundColor: historyFavPicker == 2 ? COLORS.pickedFavHisColor : 'transparent', borderRadius: historyFavPicker == 2 ? 16 : 0, }}>
                         <Text style={[historyFavPicker == 2 ? TYPOGRAPHY.H5Regular : TYPOGRAPHY.H5Bold, { color: historyFavPicker == 2 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center' }]}>{strings.favorite}</Text>
                     </View>
@@ -149,7 +171,6 @@ const HistoryFav = ({ navigation }) => {
                         renderItem={renderItem}
                         keyExtractor={item => item._id}
                     />}
-
         </View>
     )
 }
@@ -206,7 +227,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 36,
 
-    }
+    },
+    innerContainer: {
+        flex: 1,
+    },
 })
 
 export default HistoryFav

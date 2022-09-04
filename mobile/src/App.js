@@ -7,7 +7,6 @@ import { LanguageProvider } from './context/Language';
 
 const App = () => {
   return (
-
     <SafeAreaProvider >
       <AuthProvider>
         <LanguageProvider>

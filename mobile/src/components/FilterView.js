@@ -14,7 +14,7 @@ const FilterView = (props) => {
             <TouchableOpacity style={[styles.filterItem, { marginRight: 12 }]} activeOpacity={0.5} onPress={() => { props.setAlphabetic() }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', flex: 1 }}>
                     <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.filterItemText, textAlign: 'center', }]}>{props.alphabetic ? "A-Z" : "Z-A"}</Text>
-                    {props.alphabetic ? <TriUp width={24} height={24} fill={COLORS.switchInactiveCircleColor} /> : <TriDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} />}
+                    {props.alphabetic ? <TriDown width={24} height={24} fill={COLORS.switchInactiveCircleColor} /> : <TriUp width={24} height={24} fill={COLORS.switchInactiveCircleColor} />}
                 </View>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.filterItem, { paddingRight: 12 }]} activeOpacity={0.5} onPress={() => { props.setDescending() }}>
