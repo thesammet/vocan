@@ -3,6 +3,7 @@ import { TextInput, Keyboard, View, Text } from 'react-native';
 import { COLORS } from '../utils/colors'
 import TYPOGRAPHY from '../utils/typography'
 import { useTogglePasswordVisibility } from '../hooks/useTogglePasswordVisibility';
+import { strings } from '../utils/localization';
 
 const CustomTextInput = (props) => {
     return (
@@ -28,10 +29,10 @@ export const CustomTextInputMultiline = (props) => {
             value={props.value}
             onFocus={() => setBorderColor(COLORS.mainBlue)}
             onBlur={() => {
-                if (props.placeholder == "Email" || props.placeholder == "Enter your email") {
+                if (props.placeholder == strings.email || props.placeholder == strings.enterYourEmail) {
                     setBorderColor(COLORS.inputBorder)
                     if (!validateEmail(props.value)) {
-                        console.log("not a valid email")
+                        // unvalid email
                         setBorderColor('red')
                     } else {
                         // valid email

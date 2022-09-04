@@ -29,8 +29,7 @@ const FilterView = (props) => {
 
 const styles = StyleSheet.create({
     filterView: {
-        marginHorizontal: 32,
-        marginBottom: 16,
+        marginHorizontal: 40,
         marginTop: 21,
         flexDirection: 'row',
         alignItems: 'center',

@@ -106,7 +106,7 @@ const Home = ({ navigation }) => {
                         <TranslateButton
                             verticalPadding={16}
                             title={loading ? strings.loading : strings.translate}
-                            onPress={() => translateMethod()}
+                            onPress={() => { translateMethod(); Keyboard.dismiss() }}
                             disabled={!text || loading} />
                     </View>
                     <InputArea

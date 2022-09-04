@@ -17,6 +17,7 @@ import { loginUser } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
 import { customFailMessage } from '../../utils/show_messages';
 import { validateEmail } from '../../utils/helper_functions';
+import { strings } from '../../utils/localization';
 
 const Login = ({ navigation }) => {
     const [email, onChangeEmail] = useState(null)
@@ -54,19 +55,19 @@ const Login = ({ navigation }) => {
                 style={{ marginHorizontal: 44 }}>
                 <View style={styles.inputGroup}>
                     <CustomTextInputMultiline
-                        placeholder={"Email"}
+                        placeholder={strings.email}
                         maxLength={30}
                         onChangeText={email => onChangeEmail(email)}
                         value={email} />
                     <CustomTextInputPassword
-                        placeholder={"Password"}
+                        placeholder={strings.password}
                         maxLength={40}
                         onChangeText={password => onChangePassword(password)}
                         value={password}
                         secureTextEntry={false} />
                 </View>
-                <View style={styles.rememberMeGroup}>
-                    <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>Remember me!</Text>
+                {/* <View style={styles.rememberMeGroup}>
+                    <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>{strings.rememberMe}</Text>
                     <Switch
                         value={rememberMeSwitchValue}
                         onValueChange={(val) => setRememberMeSwitchValue(val)}
@@ -84,24 +85,24 @@ const Login = ({ navigation }) => {
                         renderActiveText={false}
                         renderInActiveText={false}
                     />
-                </View>
+                </View> */}
             </KeyboardAvoidingView >
             <View style={{ marginHorizontal: 44 }}>
                 {isLoading ?
-                    <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>Loading...</Text>
+                    <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>{strings.loading}</Text>
                     :
                     <CustomButton
                         verticalPadding={20}
-                        title={"Login"}
+                        title={strings.login}
                         onPress={() => {
                             login()
                         }}
                         disabled={!validateEmail(email) || password.length < 1} />}
-                <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, alignSelf: 'center', marginBottom: 12, marginTop: 32 }]}>Forgot your password?</Text>
+                <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, alignSelf: 'center', marginBottom: 12, marginTop: 32 }]}>{strings.forgotYourPassword}</Text>
                 <View style={styles.dontHaveAnAccount}>
-                    <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>Don't have an account?</Text>
+                    <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>{strings.dontHaveAccount}</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Register')} activeOpacity={0.5}>
-                        <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, marginLeft: 8 }]}>Register</Text>
+                        <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, marginLeft: 8 }]}>{strings.register}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

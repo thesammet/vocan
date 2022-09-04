@@ -9,10 +9,6 @@ import { AuthContext } from '../context/Auth';
 const Navigation = () => {
     let { token } = useContext(AuthContext)
 
-    useEffect(() => {
-        console.log(token)
-
-    }, []);
     return (
         <NavigationContainer>
             <View style={{ flex: 1 }}>{token ? <Tabs /> : <Auth />}</View>

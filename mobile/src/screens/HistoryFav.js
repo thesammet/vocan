@@ -13,6 +13,7 @@ import { customFailMessage } from '../utils/show_messages';
 import { strings } from '../utils/localization';
 import { Search, SearchBold, Filter, FilterBold } from '../components/icons';
 import FilterView from '../components/FilterView'
+import { SearchInputView } from '../components/SearchInputView';
 
 const HistoryFav = ({ navigation }) => {
     const [historyFavPicker, setHistoryFavPicker] = useState(1)
@@ -22,6 +23,8 @@ const HistoryFav = ({ navigation }) => {
     const [sortingOption, setSortingOption] = useState(0)
     const [filterAlphabetic, setFilterAlphabetic] = useState(false)
     const [filterDescending, setFilterDescending] = useState(false)
+    const [filteredData, setFilteredData] = useState([])
+    const [searchText, setSearchText] = useState("")
 
     const getAllWords = async (fav, filter) => {
         setLoadingHistory(true)
@@ -30,6 +33,7 @@ const HistoryFav = ({ navigation }) => {
             customFailMessage(strings.customFailMessage1)
         } else {
             setHistoryData(response.data)
+            setFilteredData(response.data)
         }
         setLoadingHistory(false)
     };
@@ -44,9 +48,28 @@ const HistoryFav = ({ navigation }) => {
     };
 
     let alphabeticSorting = () => {
-        filterAlphabetic ? setHistoryData([].concat(historyData).sort((a, b) => (b.main > a.main) ? 1 : -1)) : setHistoryData([].concat(historyData).sort((a, b) => (a.main > b.main) ? 1 : -1))
+        filterAlphabetic ? setFilteredData([].concat(historyData).sort((a, b) => (b.main > a.main) ? 1 : -1)) : setFilteredData([].concat(historyData).sort((a, b) => (a.main > b.main) ? 1 : -1))
         setFilterAlphabetic(!filterAlphabetic)
     }
+
+    const searchAlgorithm = (text) => {
+        if (text) {
+            const newData = historyData.filter(function (item) {
+                const itemData = item.main
+                    ? item.main.toUpperCase()
+                    : ''.toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setFilteredData(newData);
+            setSearchText(text);
+        } else {
+            // Inserted text is blank
+            // Update FilteredDataSource with masterDataSource
+            setFilteredData(historyData);
+            setSearchText(text);
+        }
+    };
 
     useEffect(() => {
         getAllWords(historyFavPicker, filterDescending)
@@ -65,15 +88,13 @@ const HistoryFav = ({ navigation }) => {
             <View style={styles.customHeaderContainer}>
                 <Text style={styles.headerText}>{strings.historyFav}</Text>
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity activeOpacity={.5} onPress={() => { setSortingOption(1) }}>
+                    <TouchableOpacity activeOpacity={.5} onPress={() => { setSortingOption(1); sortingOption == 1 && setSortingOption(0) }}>
                         {sortingOption == 1 ? <FilterBold width="32" height="32" /> : <Filter width="32" height="32" />}
                     </TouchableOpacity>
                     <View style={{ width: 8 }} />
-                    <TouchableOpacity activeOpacity={.5} onPress={() => { setSortingOption(2) }}>
+                    <TouchableOpacity activeOpacity={.5} onPress={() => { setSortingOption(2); sortingOption == 2 && setSortingOption(0) }}>
                         {sortingOption == 2 ? <SearchBold width="32" height="32" /> : <Search width="32" height="32" />}
                     </TouchableOpacity>
-
-
                 </View>
             </View>
 
@@ -87,7 +108,18 @@ const HistoryFav = ({ navigation }) => {
                         setFilterDescending(!filterDescending);
                         getAllWords(historyFavPicker, !filterDescending);
                     }} /> :
-                <Text style={[TYPOGRAPHY.H5Bold, { color: COLORS.white, alignSelf: 'center', marginTop: 21, marginBottom: 16 }]}>{"Search"}</Text>
+                sortingOption == 2 ?
+                    <View style={{ marginHorizontal: 32, marginTop: 20 }}>
+                        <SearchInputView
+                            placeholder={strings.search}
+                            value={searchText}
+                            onChangeText={(value) => { setSearchText(value); searchAlgorithm(value) }}
+                            edit={true}
+                            clearText={() => { setSearchText('') }}
+                            text={searchText}
+                        />
+                    </View>
+                    : <View />
             }
 
             <View style={[styles.historyFavGroup, { backgroundColor: COLORS.inputBg }]}>
@@ -105,15 +137,15 @@ const HistoryFav = ({ navigation }) => {
 
             {loadingHistory ?
                 <View /> :
-                <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.inputHintText, alignSelf: 'center', marginBottom: 8 }]}>{historyFavPicker == 1 ? historyData.length : historyData.length} {strings.result}</Text>
+                <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.inputHintText, alignSelf: 'center', marginBottom: 8 }]}>{historyFavPicker == 1 ? filteredData.length : filteredData.length} {strings.result}</Text>
             }
             {loadingHistory ?
                 <ActivityIndicator /> :
-                historyData.length == 0 ?
+                filteredData.length == 0 ?
                     <NoWordView subject={historyFavPicker == 1 ? strings.history : strings.favorite} />
                     :
                     <FlatList
-                        data={historyData}
+                        data={filteredData}
                         renderItem={renderItem}
                         keyExtractor={item => item._id}
                     />}
@@ -157,7 +189,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         justifyContent: 'center',
         marginHorizontal: 32,
-        padding: 5
+        padding: 5,
+        marginTop: 20
     },
     item: {
         backgroundColor: '#f9c2ff',
