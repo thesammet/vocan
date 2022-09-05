@@ -1,4 +1,4 @@
-package com.samo.vocan.newarchitecture.modules;
+package com.abdusamedakgul.vocan.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

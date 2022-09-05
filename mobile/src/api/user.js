@@ -23,7 +23,7 @@ export const registerUser = async (
         console.log(json)
         return json;
     } catch (error) {
-        console.log('Register User Error: ', error);
+        console.log('Register User Error: ', JSON.stringify(error));
         return { error: true };
     }
 };
@@ -51,6 +51,33 @@ export const loginUser = async (
         return json;
     } catch (error) {
         console.log('Login User Error: ', error);
+        return { error: true };
+    }
+};
+
+export const socialLogin = async (
+    username,
+    email,
+    password
+) => {
+    try {
+        const response = await fetch(`${BASE_URL}/social-login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username,
+                email,
+                password
+            }),
+        });
+
+        const json = await response.json();
+        console.log(json)
+        return json;
+    } catch (error) {
+        console.log('Social Login User Error: ', error);
         return { error: true };
     }
 };

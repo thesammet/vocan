@@ -1,8 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Settings from '../screens/Settings/Settings'
-import Password from '../screens/Settings/Password'
-import UserInfo from '../screens/Settings/UserInfo'
+import Settings from '../screens/SettingsScreens/Settings'
+import Password from '../screens/SettingsScreens/Password'
+import UserInfo from '../screens/SettingsScreens/UserInfo'
 
 const Stack = createNativeStackNavigator();
 

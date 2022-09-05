@@ -6,14 +6,24 @@ import {
     TouchableOpacity,
     Keyboard,
     View,
-    Text
+    Text,
+    Platform,
+    Pressable
 } from 'react-native';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+} from '@react-native-google-signin/google-signin';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
+import { SOCIAL_PASSWORD, BASE_URL } from "@env"
 import { Switch } from 'react-native-switch';
 import { COLORS } from '../../utils/colors'
 import TYPOGRAPHY from '../../utils/typography'
 import CustomButton from '../../components/CustomButton';
-import { VocanIconTextGroup } from '../../components/icons';
-import { loginUser } from '../../api/user';
+import { VocanIconTextGroup, Icons8Google, Apple } from '../../components/icons';
+import { loginUser, socialLogin } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
 import { customFailMessage } from '../../utils/show_messages';
 import { validateEmail } from '../../utils/helper_functions';
@@ -25,6 +35,10 @@ const Login = ({ navigation }) => {
     const [rememberMeSwitchValue, setRememberMeSwitchValue] = useState(false)
     const { addToken } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState(false);
+
+    GoogleSignin.configure({
+        webClientId: '401373324848-r9b8s81j61tid396qs117nud8rae7673.apps.googleusercontent.com',
+    });
 
     const login = async () => {
         setIsLoading(true);
@@ -42,7 +56,62 @@ const Login = ({ navigation }) => {
         }
     };
 
+    const socialLoginMethod = async (email, password, username) => {
+        console.log("base url: " + BASE_URL)
+        setIsLoading(true);
+        let response = await socialLogin(username, email, password);
+        console.log(JSON.stringify(response))
+        setIsLoading(false);
 
+        if (response.error) {
+            setIsLoading(false);
+            customFailMessage(
+                "Unsuccesfull login"
+            );
+        } else {
+            addToken(response.token);
+        }
+    };
+
+    const googleSignIn = async () => {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            //console.log(userInfo)
+            socialLoginMethod(userInfo.user.email, "secretpassword", "Vocan-" + userInfo.user.familyName + "-" + userInfo.user.id.slice(4, 7))
+        } catch (error) {
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                // user cancelled the login flow
+                console.log("SIGN_IN_CANCELLED")
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                // operation (e.g. sign in) is in progress already
+                console.log("IN_PROGRESS")
+
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                // play services not available or outdated
+                console.log("PLAY_SERVICES_NOT_AVAILABLE")
+            } else {
+                // some other error happened
+                console.log("else")
+            }
+        }
+    };
+
+    async function onAppleButtonPress() {
+        const appleAuthRequestResponse = await appleAuth.performRequest({
+            requestedOperation: appleAuth.Operation.LOGIN,
+            requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+        });
+
+        if (!appleAuthRequestResponse.identityToken) {
+            throw new Error('Apple Sign-In failed - no identify token returned');
+        }
+
+        const { identityToken, nonce } = appleAuthRequestResponse;
+        const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+
+        return auth().signInWithCredential(appleCredential);
+    }
 
     return (
         <TouchableOpacity
@@ -66,30 +135,31 @@ const Login = ({ navigation }) => {
                         value={password}
                         secureTextEntry={false} />
                 </View>
-                {/* <View style={styles.rememberMeGroup}>
-                    <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>{strings.rememberMe}</Text>
-                    <Switch
-                        value={rememberMeSwitchValue}
-                        onValueChange={(val) => setRememberMeSwitchValue(val)}
-                        circleSize={30}
-                        barHeight={30}
-                        circleBorderWidth={3}
-                        backgroundActive={COLORS.mainBlue}
-                        backgroundInactive={COLORS.inputBorder}
-                        circleActiveColor={COLORS.white}
-                        circleInActiveColor={COLORS.switchInactiveCircleColor}
-                        changeValueImmediately={true}
-                        switchRightPx={2}
-                        switchWidthMultiplier={2}
-                        switchBorderRadius={8}
-                        renderActiveText={false}
-                        renderInActiveText={false}
-                    />
-                </View> */}
+                <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.white, textAlign: 'center' }]}>{strings.orSignInWith}</Text>
+                <View style={styles.socialIconView}>
+                    {Platform.OS == 'ios' &&
+                        <TouchableOpacity onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}>
+                            <View style={styles.rowContainer}>
+                                <View style={styles.socialIcon}>
+                                    <Apple width={40} height={40}></Apple>
+                                    <Text style={[TYPOGRAPHY.H3Semibold, styles.socialIconText]}>Apple</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>}
+                    <TouchableOpacity onPress={googleSignIn}>
+                        <View style={styles.rowContainer}>
+                            <View style={styles.socialIcon}>
+                                <Icons8Google width={40} height={40}></Icons8Google>
+                                <Text style={[TYPOGRAPHY.H3Semibold, styles.socialIconText]}>Google</Text>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </KeyboardAvoidingView >
+
             <View style={{ marginHorizontal: 44 }}>
                 {isLoading ?
-                    <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>{strings.loading}</Text>
+                    <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>{strings.loginLoading}</Text>
                     :
                     <CustomButton
                         verticalPadding={20}
@@ -118,7 +188,8 @@ const styles = StyleSheet.create({
         paddingVertical: 24
     },
     inputGroup: {
-        paddingVertical: 16,
+        paddingTop: 16,
+        paddingBottom: 8
     },
     rememberMeGroup: {
         flexDirection: 'row',
@@ -130,6 +201,32 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         marginHorizontal: 20,
+    },
+    socialButtons: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 32,
+        backgroundColor: COLORS.disabledButton,
+        paddingVertical: 20
+    },
+    socialIconView: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        marginTop: 8
+    },
+    socialIcon: {
+        backgroundColor: 'white',
+        padding: 8,
+        flexDirection: 'row',
+        borderRadius: 12
+    },
+    socialIconText: {
+        color: COLORS.mainBlue,
+        alignSelf: 'center',
+        marginLeft: 4
+    },
+    rowContainer: {
+        flexDirection: 'row'
     }
 })
 export default Login

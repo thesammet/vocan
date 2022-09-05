@@ -30,6 +30,25 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
+router.post('/social-login', async (req, res) => {
+
+    try {
+        const isUser = await User.find({ email: req.body.email })
+        if (isUser.length == 0) {
+            const newUser = new User(req.body)
+            const newToken = await newUser.generateAuthToken()
+            await newUser.save()
+            return res.status(201).send({ user: newUser, token: newToken })
+        }
+        const user = await User.findByCredentials(req.body.email, req.body.password)
+        const token = await user.generateAuthToken()
+        res.status(200).send({ user, token })
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({ error: error })
+    }
+})
+
 router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['username', 'password', 'email']
@@ -53,7 +72,7 @@ router.patch('/word-history', auth, async (req, res) => {
         res.status(200).send({ data: { history: req.user.history } })
         res.status
     } catch (error) {
-
+        res.status(400).send({ error: error })
     }
 })
 

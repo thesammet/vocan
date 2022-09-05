@@ -1,4 +1,4 @@
-package com.samo.vocan;
+package com.abdusamedakgul.vocan;
 
 import android.app.Application;
 import android.content.Context;
@@ -9,7 +9,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
-import com.samo.vocan.newarchitecture.MainApplicationReactNativeHost;
+import com.abdusamedakgul.vocan.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
@@ -36,14 +36,6 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "index";
         }
-
-        @Override
-        protected List<ReactPackage> getPackages() {
-          return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-          new ReactNativeLocalizationPackage()
-      );
-    }
       };
 
   private final ReactNativeHost mNewArchitectureNativeHost =
@@ -82,7 +74,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.samo.vocan.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.abdusamedakgul.vocan.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

@@ -1,4 +1,4 @@
-package com.samo.vocan.newarchitecture;
+package com.abdusamedakgul.vocan.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.samo.vocan.BuildConfig;
-import com.samo.vocan.newarchitecture.components.MainComponentsRegistry;
-import com.samo.vocan.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.abdusamedakgul.vocan.BuildConfig;
+import com.abdusamedakgul.vocan.newarchitecture.components.MainComponentsRegistry;
+import com.abdusamedakgul.vocan.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

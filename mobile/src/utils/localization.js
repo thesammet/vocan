@@ -54,6 +54,8 @@ export let strings = new LocalizedStrings({
         rememberMe: "Remember me!",
         dontHaveAccount: "Don't have an account?",
         forgotYourPassword: "Forgot your password?",
+        loginLoading: "Logging in...",
+        orSignInWith: "Or login with:"
     },
     tr: {
         translate: "Çevir",
@@ -108,5 +110,7 @@ export let strings = new LocalizedStrings({
         rememberMe: "Beni hatırla",
         dontHaveAccount: "Hesabınız yok mu?",
         forgotYourPassword: "Şifrenizi mi unuttunuz?",
+        loginLoading: "Giriş yapılıyor...",
+        orSignInWith: "Veya:"
     }
 });

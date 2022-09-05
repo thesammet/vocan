@@ -74,7 +74,7 @@ const Tabs = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Settings"
+                    name="SettingsStack"
                     component={SettingsStack}
                     options={{
                         title: 'Settings',

@@ -1,4 +1,4 @@
-package com.samo.vocan;
+package com.abdusamedakgul.vocan;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
