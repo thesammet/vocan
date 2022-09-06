@@ -78,7 +78,7 @@ const Login = ({ navigation }) => {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
             //console.log(userInfo)
-            socialLoginMethod(userInfo.user.email, "secretpassword", "Vocan-" + userInfo.user.familyName + "-" + userInfo.user.id.slice(4, 7))
+            socialLoginMethod(userInfo.user.email, SOCIAL_PASSWORD, "Vocan-" + userInfo.user.familyName + "-" + userInfo.user.id.slice(4, 7))
         } catch (error) {
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 // user cancelled the login flow
@@ -109,6 +109,8 @@ const Login = ({ navigation }) => {
 
         const { identityToken, nonce } = appleAuthRequestResponse;
         const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+        console.log(appleCredential)
+        //socialLoginMethod(userInfo.user.email, SOCIAL_PASSWORD, "Vocan-" + userInfo.user.familyName + "-" + userInfo.user.id.slice(4, 7))
 
         return auth().signInWithCredential(appleCredential);
     }
@@ -135,7 +137,20 @@ const Login = ({ navigation }) => {
                         value={password}
                         secureTextEntry={false} />
                 </View>
-                <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.white, textAlign: 'center' }]}>{strings.orSignInWith}</Text>
+            </KeyboardAvoidingView >
+
+            <View style={{ marginHorizontal: 44 }}>
+                {isLoading ?
+                    <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>{strings.loginLoading}</Text>
+                    :
+                    <CustomButton
+                        verticalPadding={20}
+                        title={strings.login}
+                        onPress={() => {
+                            login()
+                        }}
+                        disabled={!validateEmail(email) || password.length < 1} />}
+                <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.white, textAlign: 'center', marginTop: 16 }]}>{strings.orSignInWith}</Text>
                 <View style={styles.socialIconView}>
                     {Platform.OS == 'ios' &&
                         <TouchableOpacity onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}>
@@ -155,19 +170,6 @@ const Login = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-            </KeyboardAvoidingView >
-
-            <View style={{ marginHorizontal: 44 }}>
-                {isLoading ?
-                    <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>{strings.loginLoading}</Text>
-                    :
-                    <CustomButton
-                        verticalPadding={20}
-                        title={strings.login}
-                        onPress={() => {
-                            login()
-                        }}
-                        disabled={!validateEmail(email) || password.length < 1} />}
                 <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, alignSelf: 'center', marginBottom: 12, marginTop: 32 }]}>{strings.forgotYourPassword}</Text>
                 <View style={styles.dontHaveAnAccount}>
                     <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>{strings.dontHaveAccount}</Text>
