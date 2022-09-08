@@ -1,4 +1,4 @@
-export { default as Apple } from './Apple';
+export { default as AppleBorder } from './AppleBorder';
 export { default as ArrowLeft } from './ArrowLeft';
 export { default as ChevronDown } from './ChevronDown';
 export { default as ChevronLeft } from './ChevronLeft';

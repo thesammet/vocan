@@ -8,7 +8,8 @@ import {
     FlatList,
     Platform,
     NativeModules,
-    Linking
+    Linking,
+    ActivityIndicator
 } from 'react-native';
 import TYPOGRAPHY from '../../utils/typography'
 import { COLORS } from '../../utils/colors'
@@ -129,12 +130,14 @@ const SettingsScreen = ({ navigation }) => {
             }} />
 
             <View style={{ justifyContent: 'space-between', flex: 1 }}>
-
                 <View>
-                    <View style={styles.userInfoGroup}>
-                        <Text style={[TYPOGRAPHY.H2Semibold, { color: COLORS.white, alignSelf: 'center' }]}>{username}</Text>
-                        <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText, alignSelf: 'center' }]}>{email}</Text>
-                    </View>
+                    {!username || !email ?
+                        <ActivityIndicator style={styles.userInfoGroup} color={COLORS.paleBlue}></ActivityIndicator>
+                        :
+                        <View style={styles.userInfoGroup}>
+                            <Text style={[TYPOGRAPHY.H2Semibold, { color: COLORS.white, alignSelf: 'center', textAlign: 'center' }]}>{username}</Text>
+                            <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText, alignSelf: 'center', textAlign: 'center' }]}>{email}</Text>
+                        </View>}
 
                     <View style={{ width: '30%', alignSelf: 'center' }}>
                         <CustomButton
@@ -191,6 +194,7 @@ const SettingsScreen = ({ navigation }) => {
                         />
                     </View>
                 </View>
+
                 <View style={{ marginBottom: 16, marginHorizontal: 48 }}>
                     <CustomButton
                         verticalPadding={windowHeight / 50}
@@ -200,6 +204,7 @@ const SettingsScreen = ({ navigation }) => {
                         }}
                         disabled={false} />
                 </View>
+
             </View>
         </View >
 

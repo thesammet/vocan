@@ -11,7 +11,7 @@ export const LanguageProvider = ({ children }) => {
             try {
                 const mainLanguage = await AsyncStorage.getItem('mainLanguage');
                 const translatedLanguage = await AsyncStorage.getItem('translatedLanguage');
-                if (mainLanguage || translatedLanguage) {
+                if (mainLanguage && translatedLanguage) {
                     setMainLanguage(JSON.parse(mainLanguage));
                     setTranslatedLanguage(JSON.parse(translatedLanguage));
                 }

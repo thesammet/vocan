@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { CustomTextInputMultiline, CustomTextInputPassword } from '../../components/CustomInputText';
 import {
     StyleSheet,
@@ -17,12 +17,12 @@ import {
     statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
-import { SOCIAL_PASSWORD, BASE_URL } from "@env"
-import { Switch } from 'react-native-switch';
+import jwt_decode from 'jwt-decode';
+import { SOCIAL_PASSWORD } from "@env"
 import { COLORS } from '../../utils/colors'
 import TYPOGRAPHY from '../../utils/typography'
 import CustomButton from '../../components/CustomButton';
-import { VocanIconTextGroup, Icons8Google, Apple } from '../../components/icons';
+import { VocanIconTextGroup, Icons8Google, AppleBorder } from '../../components/icons';
 import { loginUser, socialLogin } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
 import { customFailMessage } from '../../utils/show_messages';
@@ -37,7 +37,7 @@ const Login = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     GoogleSignin.configure({
-        webClientId: '401373324848-r9b8s81j61tid396qs117nud8rae7673.apps.googleusercontent.com',
+        webClientId: '401373324848-r9b8s81j61tid396qs117nud8rae7673.apps.googleusercontent.com'
     });
 
     const login = async () => {
@@ -57,16 +57,14 @@ const Login = ({ navigation }) => {
     };
 
     const socialLoginMethod = async (email, password, username) => {
-        console.log("base url: " + BASE_URL)
         setIsLoading(true);
         let response = await socialLogin(username, email, password);
-        console.log(JSON.stringify(response))
         setIsLoading(false);
 
         if (response.error) {
             setIsLoading(false);
             customFailMessage(
-                "Unsuccesfull login"
+                "Can't logging in. Email has been used before."
             );
         } else {
             addToken(response.token);
@@ -77,42 +75,37 @@ const Login = ({ navigation }) => {
         try {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
-            //console.log(userInfo)
             socialLoginMethod(userInfo.user.email, SOCIAL_PASSWORD, "Vocan-" + userInfo.user.familyName + "-" + userInfo.user.id.slice(4, 7))
         } catch (error) {
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-                // user cancelled the login flow
                 console.log("SIGN_IN_CANCELLED")
             } else if (error.code === statusCodes.IN_PROGRESS) {
-                // operation (e.g. sign in) is in progress already
                 console.log("IN_PROGRESS")
 
             } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-                // play services not available or outdated
                 console.log("PLAY_SERVICES_NOT_AVAILABLE")
             } else {
-                // some other error happened
-                console.log("else")
+                console.log("Google authentication error: " + error)
+                customFailMessage(
+                    "Could not login with Google."
+                );
             }
         }
     };
 
-    async function onAppleButtonPress() {
-        const appleAuthRequestResponse = await appleAuth.performRequest({
-            requestedOperation: appleAuth.Operation.LOGIN,
-            requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-        });
-
-        if (!appleAuthRequestResponse.identityToken) {
-            throw new Error('Apple Sign-In failed - no identify token returned');
+    const onAppleButtonPress = async () => {
+        try {
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGIN,
+                requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME]
+            });
+            let appleAuthResponseDecoded = jwt_decode(appleAuthRequestResponse.identityToken)
+            socialLoginMethod(appleAuthResponseDecoded.email, SOCIAL_PASSWORD, "Vocan-" + appleAuthRequestResponse.identityToken.slice(4, 7))
+        } catch (error) {
+            customFailMessage(
+                "Could not login with Apple."
+            );
         }
-
-        const { identityToken, nonce } = appleAuthRequestResponse;
-        const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
-        console.log(appleCredential)
-        //socialLoginMethod(userInfo.user.email, SOCIAL_PASSWORD, "Vocan-" + userInfo.user.familyName + "-" + userInfo.user.id.slice(4, 7))
-
-        return auth().signInWithCredential(appleCredential);
     }
 
     return (
@@ -128,11 +121,13 @@ const Login = ({ navigation }) => {
                     <CustomTextInputMultiline
                         placeholder={strings.email}
                         maxLength={30}
+                        autoCapitalize='none'
                         onChangeText={email => onChangeEmail(email)}
                         value={email} />
                     <CustomTextInputPassword
                         placeholder={strings.password}
                         maxLength={40}
+                        autoCapitalize='none'
                         onChangeText={password => onChangePassword(password)}
                         value={password}
                         secureTextEntry={false} />
@@ -150,13 +145,13 @@ const Login = ({ navigation }) => {
                             login()
                         }}
                         disabled={!validateEmail(email) || password.length < 1} />}
-                <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.white, textAlign: 'center', marginTop: 16 }]}>{strings.orSignInWith}</Text>
+                <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.white, textAlign: 'center', marginTop: 32 }]}>{strings.orSignInWith}</Text>
                 <View style={styles.socialIconView}>
                     {Platform.OS == 'ios' &&
-                        <TouchableOpacity onPress={() => onAppleButtonPress().then(() => console.log('Apple sign-in complete!'))}>
+                        <TouchableOpacity onPress={() => { onAppleButtonPress() }}>
                             <View style={styles.rowContainer}>
                                 <View style={styles.socialIcon}>
-                                    <Apple width={40} height={40}></Apple>
+                                    <AppleBorder width={40} height={40}></AppleBorder>
                                     <Text style={[TYPOGRAPHY.H3Semibold, styles.socialIconText]}>Apple</Text>
                                 </View>
                             </View>
@@ -170,7 +165,7 @@ const Login = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, alignSelf: 'center', marginBottom: 12, marginTop: 32 }]}>{strings.forgotYourPassword}</Text>
+                {/* <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, alignSelf: 'center', marginBottom: 12, marginTop: 32 }]}>{strings.forgotYourPassword}</Text> */}
                 <View style={styles.dontHaveAnAccount}>
                     <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>{strings.dontHaveAccount}</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Register')} activeOpacity={0.5}>
@@ -191,7 +186,6 @@ const styles = StyleSheet.create({
     },
     inputGroup: {
         paddingTop: 16,
-        paddingBottom: 8
     },
     rememberMeGroup: {
         flexDirection: 'row',
@@ -203,6 +197,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         marginHorizontal: 20,
+        marginTop: 32
     },
     socialButtons: {
         alignItems: 'center',
@@ -217,7 +212,7 @@ const styles = StyleSheet.create({
         marginTop: 8
     },
     socialIcon: {
-        backgroundColor: 'white',
+        backgroundColor: COLORS.disabledButton,
         padding: 8,
         flexDirection: 'row',
         borderRadius: 12

@@ -5,7 +5,6 @@ import {
 import TYPOGRAPHY from '../utils/typography'
 import { COLORS } from '../utils/colors'
 import HomeBasicHeader from '../components/CustomHeader';
-import { CustomTextInputMultiline } from '../components/CustomInputText'
 import { Swap, ChevronDown } from '../components/icons';
 import { InputArea } from '../components/CustomInputArea';
 import TranslateButton from '../components/TranslateButton'
@@ -15,8 +14,8 @@ import { LanguageContext } from '../context/Language';
 import { translateWord } from '../api/word';
 import { Capitalize } from '../utils/helper_functions'
 import { AuthContext } from '../context/Auth';
-import { strings, onSetLanguageToItalianon } from '../utils/localization';
-import { customFailMessage, customInfoMessage, customSuccessMessage } from '../utils/show_messages';
+import { strings } from '../utils/localization';
+import { customFailMessage } from '../utils/show_messages';
 
 const Home = ({ navigation }) => {
     const { mainLanguage, addMainLanguage, translatedLanguage, addTranslatedLanguage } = useContext(LanguageContext)

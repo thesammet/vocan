@@ -60,11 +60,13 @@ const Register = ({ navigation }) => {
                             placeholder={strings.createUsername}
                             maxLength={30}
                             onChangeText={username => onChangeUsername(username)}
+                            autoCapitalize='none'
                             value={username} />
                         <CustomTextInputMultiline
                             placeholder={strings.enterYourEmail}
                             maxLength={40}
                             onChangeText={email => onChangeEmail(email)}
+                            autoCapitalize='none'
                             value={email} />
                     </View>
                     :
@@ -73,11 +75,13 @@ const Register = ({ navigation }) => {
                             placeholder={strings.createPassword}
                             maxLength={30}
                             onChangeText={password => onChangePassword(password)}
+                            autoCapitalize='none'
                             value={password} />
                         <CustomTextInputPassword
                             placeholder={strings.enterPasswordAgain}
                             maxLength={40}
                             onChangeText={passwordAgain => onChangePasswordAgain(passwordAgain)}
+                            autoCapitalize='none'
                             value={passwordAgain} />
                     </View>}
                 {pageNumber == 1 ?

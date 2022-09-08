@@ -61,6 +61,7 @@ export const socialLogin = async (
     password
 ) => {
     try {
+        console.log(BASE_URL)
         const response = await fetch(`${BASE_URL}/social-login`, {
             method: 'POST',
             headers: {

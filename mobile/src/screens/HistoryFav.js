@@ -162,7 +162,9 @@ const HistoryFav = ({ navigation }) => {
                 <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.inputHintText, alignSelf: 'center', marginBottom: 8 }]}>{historyFavPicker == 1 ? filteredData.length : filteredData.length} {strings.result}</Text>
             }
             {loadingHistory ?
-                <ActivityIndicator /> :
+                <View style={{ marginTop: 8 }}>
+                    <ActivityIndicator color={COLORS.paleBlue} />
+                </View> :
                 filteredData.length == 0 ?
                     <NoWordView subject={historyFavPicker == 1 ? strings.history : strings.favorite} />
                     :
