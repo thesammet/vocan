@@ -52,7 +52,6 @@ router.get('/words', auth, async (req, res) => {
         })
         res.status(200).send({ data: req.user.words })
     } catch (error) {
-        console.log(error)
         res.status(400).send({ error: "xx" })
     }
 })
@@ -81,7 +80,6 @@ router.patch('/words/:id', auth, async (req, res) => {
         await word.save()
         res.status(200).send({ data: word })
     } catch (error) {
-        console.log(error)
         res.status(400).send(error)
     }
 })

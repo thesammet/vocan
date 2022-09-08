@@ -26,7 +26,6 @@ export const InputArea = (props) => {
                 onBlur={() => setBorderColor(COLORS.inputBorder)}
                 placeholderTextColor={COLORS.inputHintText}
                 multiline
-
                 value={props.text}
             />
             {props.edit ? <View style={{ justifyContent: 'space-between', marginRight: 16, marginVertical: 16 }}>

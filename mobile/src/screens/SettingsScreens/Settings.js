@@ -21,7 +21,7 @@ import CustomModal from '../../components/CustomModal';
 import PasswordModal from '../../components/PasswordModal';
 import { getProfile, wordHistory } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
-import { customFailMessage } from '../../utils/show_messages';
+import { customFailMessage, customInfoMessage } from '../../utils/show_messages';
 import { strings } from '../../utils/localization';
 import { localizationLanguages } from '../../assets/sources/localization_languages'
 import BottomSheet from 'react-native-gesture-bottom-sheet';
@@ -39,6 +39,7 @@ const SettingsScreen = ({ navigation }) => {
     };
     const [username, setUsername] = useState(null)
     const [email, setEmail] = useState(null)
+    const [socialLogin, setSocialLogin] = useState(true)
     const { token } = useContext(AuthContext)
     const bottomSheet = useRef();
     const [selectedLanguage, setSelectedLanguage] = useState(null)
@@ -59,6 +60,7 @@ const SettingsScreen = ({ navigation }) => {
                 setEmail(response.user.email)
                 setUsername(response.user.username)
                 setRememberMeSwitchValue(response.user.history)
+                setSocialLogin(response.user.socialLogin)
             }
         } catch (error) {
             customFailMessage(strings.customFailMessage1)
@@ -149,7 +151,7 @@ const SettingsScreen = ({ navigation }) => {
                             disabled={false} />
                     </View>
                     <View style={[styles.dividerView, { borderBottomColor: COLORS.disabledButton }]}></View>
-                    <TouchableOpacity activeOpacity={.5} onPress={() => navigation.navigate('Password')}>
+                    <TouchableOpacity activeOpacity={.5} onPress={() => { socialLogin ? customInfoMessage(strings.customInfoMessage1) : navigation.navigate('Password') }}>
                         <View style={[styles.settingsGroup, { marginBottom: 24 }]}>
                             <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{strings.password}</Text>
                             <ChevronRight width={28} height={28} color="#101010" />

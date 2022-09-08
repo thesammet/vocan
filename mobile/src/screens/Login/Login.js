@@ -7,8 +7,7 @@ import {
     Keyboard,
     View,
     Text,
-    Platform,
-    Pressable
+    Platform
 } from 'react-native';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 import {
@@ -28,6 +27,7 @@ import { AuthContext } from '../../context/Auth';
 import { customFailMessage } from '../../utils/show_messages';
 import { validateEmail } from '../../utils/helper_functions';
 import { strings } from '../../utils/localization';
+import { err } from 'react-native-svg/lib/typescript/xml';
 
 const Login = ({ navigation }) => {
     const [email, onChangeEmail] = useState(null)
@@ -75,7 +75,7 @@ const Login = ({ navigation }) => {
         try {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
-            socialLoginMethod(userInfo.user.email, SOCIAL_PASSWORD, "Vocan-" + userInfo.user.familyName + "-" + userInfo.user.id.slice(4, 7))
+            socialLoginMethod(userInfo.user.email, SOCIAL_PASSWORD, "Vocan-" + userInfo.user.familyName + "-" + userInfo.user.id.slice(4, 8))
         } catch (error) {
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 console.log("SIGN_IN_CANCELLED")
@@ -100,11 +100,9 @@ const Login = ({ navigation }) => {
                 requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME]
             });
             let appleAuthResponseDecoded = jwt_decode(appleAuthRequestResponse.identityToken)
-            socialLoginMethod(appleAuthResponseDecoded.email, SOCIAL_PASSWORD, "Vocan-" + appleAuthRequestResponse.identityToken.slice(4, 7))
+            socialLoginMethod(appleAuthResponseDecoded.email, SOCIAL_PASSWORD, "Vocan-" + appleAuthRequestResponse.identityToken.slice(4, 8))
         } catch (error) {
-            customFailMessage(
-                "Could not login with Apple."
-            );
+            console.log("Couldnt launch with Apple.")
         }
     }
 
@@ -135,16 +133,16 @@ const Login = ({ navigation }) => {
             </KeyboardAvoidingView >
 
             <View style={{ marginHorizontal: 44 }}>
-                {isLoading ?
-                    <Text style={[TYPOGRAPHY.H3Bold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>{strings.loginLoading}</Text>
-                    :
-                    <CustomButton
-                        verticalPadding={20}
-                        title={strings.login}
-                        onPress={() => {
-                            login()
-                        }}
-                        disabled={!validateEmail(email) || password.length < 1} />}
+
+                <CustomButton
+                    verticalPadding={20}
+                    title={strings.login}
+                    onPress={() => {
+                        login()
+                    }}
+                    disabled={!validateEmail(email) || password.length < 1}
+                    loading={isLoading} />
+
                 <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.white, textAlign: 'center', marginTop: 32 }]}>{strings.orSignInWith}</Text>
                 <View style={styles.socialIconView}>
                     {Platform.OS == 'ios' &&
@@ -165,13 +163,14 @@ const Login = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                {/* <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, alignSelf: 'center', marginBottom: 12, marginTop: 32 }]}>{strings.forgotYourPassword}</Text> */}
+
                 <View style={styles.dontHaveAnAccount}>
                     <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>{strings.dontHaveAccount}</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Register')} activeOpacity={0.5}>
                         <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, marginLeft: 8 }]}>{strings.register}</Text>
                     </TouchableOpacity>
                 </View>
+
             </View>
         </TouchableOpacity>
 

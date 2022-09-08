@@ -33,7 +33,6 @@ export const getAllWordsHistory = async (
     token,
     params
 ) => {
-
     try {
         const response = await fetch(`${BASE_URL}/words?${params}`, {
             method: 'GET',

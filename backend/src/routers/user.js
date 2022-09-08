@@ -35,7 +35,7 @@ router.post('/social-login', async (req, res) => {
     try {
         const isUser = await User.find({ email: req.body.email })
         if (isUser.length == 0) {
-            const newUser = new User(req.body)
+            const newUser = new User({ ...req.body, socialLogin: true })
             const newToken = await newUser.generateAuthToken()
             await newUser.save()
             return res.status(201).send({ user: newUser, token: newToken })
@@ -44,7 +44,6 @@ router.post('/social-login', async (req, res) => {
         const token = await user.generateAuthToken()
         res.status(200).send({ user, token })
     } catch (error) {
-        console.log(error)
         res.status(400).send({ error: error })
     }
 })
@@ -80,7 +79,7 @@ router.get('/users/me', auth, async (req, res) => {
     try {
         res.status(200).send({ user: req.user })
     } catch (error) {
-        res.status(404).send({ error: error.toString })
+        res.status(404).send({ error: error.toString() })
     }
 })
 

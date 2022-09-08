@@ -9,7 +9,6 @@ const CustomTextInput = (props) => {
     return (
         <TextInput
             {...props}
-            editable
         />
     );
 }
@@ -27,6 +26,7 @@ export const CustomTextInputMultiline = (props) => {
             multiline={props.multiline}
             maxLength={props.maxLength}
             value={props.value}
+            editable={props.editable}
             onFocus={() => setBorderColor(COLORS.mainBlue)}
             onBlur={() => {
                 if (props.placeholder == strings.email || props.placeholder == strings.enterYourEmail) {

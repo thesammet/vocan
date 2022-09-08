@@ -16,9 +16,9 @@ import { customFailMessage, customInfoMessage, customSuccessMessage } from '../.
 import { strings } from '../../utils/localization';
 
 const UserInfo = ({ navigation }) => {
-    const [username, onChangeUsername] = useState("thesammet")
-    const [email, onChangeEmail] = useState("sameddakgul99@gmail.com")
-    const [profile, setProfile] = useState(null)
+    const [username, onChangeUsername] = useState("-")
+    const [email, onChangeEmail] = useState("-")
+    const [socialLogin, setSocialLogin] = useState(true)
     const windowHeight = Dimensions.get('window').height;
     const { token, removeToken } = useContext(AuthContext)
 
@@ -58,6 +58,7 @@ const UserInfo = ({ navigation }) => {
             } else {
                 onChangeUsername(response.user.username)
                 onChangeEmail(response.user.email)
+                setSocialLogin(response.user.socialLogin)
             }
         } catch (error) {
             customFailMessage(strings.customFailMessage1)
@@ -90,7 +91,10 @@ const UserInfo = ({ navigation }) => {
                     <CustomTextInputMultiline
                         maxLength={30}
                         onChangeText={email => onChangeEmail(email)}
-                        value={email} />
+                        value={email}
+                        editable={socialLogin ? false : true} />
+                    <Text style={[TYPOGRAPHY.H6Regular, { color: COLORS.paleText, alignSelf: 'flex-start', marginLeft: 8 }]}>-{strings.socialEmailChangeInfo}</Text>
+
                 </View>
                 <View>
                     <View style={{ width: '100%', alignSelf: 'center', marginBottom: 24, }}>

@@ -12,7 +12,7 @@ export let strings = new LocalizedStrings({
         settings: "Settings",
         edit: "Edit",
         language: "Language",
-        languageHint: "You can change it in the settings of your device",
+        languageHint: "The application language changes automatically according to your device language.",
         wordHistory: "Word history",
         signOut: "Sign Out",
         profile: "Profile",
@@ -34,6 +34,7 @@ export let strings = new LocalizedStrings({
         modal2: "Enter your password to edit the profile.",
         customSuccessMessage1: "Password has been changed.",
         customSuccessMessage2: "User infromation has been changed.",
+        customInfoMessage1: "Password change is disabled for social media login.",
         noWord: "You have no word: ",
         result: "result found",
         filter: "Filter",
@@ -54,8 +55,10 @@ export let strings = new LocalizedStrings({
         rememberMe: "Remember me!",
         dontHaveAccount: "Don't have an account?",
         forgotYourPassword: "Forgot your password?",
-        loginLoading: "Logging in...",
-        orSignInWith: "Or login with:"
+        loginLoading: "Logging in",
+        orSignInWith: "Or login with:",
+        creatingUser: "Creating User",
+        socialEmailChangeInfo: "Email editing disabled on social media login"
     },
     tr: {
         translate: "Çevir",
@@ -68,7 +71,7 @@ export let strings = new LocalizedStrings({
         settings: "Ayarlar",
         edit: "Düzenle",
         language: "Dil",
-        languageHint: "Cihazınızın ayarlar bölümünden değiştirebilirsiniz",
+        languageHint: "Uygulama dili, cihaz dilinize göre otomatik değişmektedir.",
         wordHistory: "Kelime geçmişi",
         signOut: "Çıkış Yap",
         profile: "Profil",
@@ -90,6 +93,7 @@ export let strings = new LocalizedStrings({
         modal2: "Profili editlemek için şifrenizi girin",
         customSuccessMessage1: "Parolanız başarıyla değiştirildi.",
         customSuccessMessage2: "Kullanıcı bilgileri değiştirildi.",
+        customInfoMessage1: "Sosyal medya girişlerinde şifre değiştirme devre dışı.",
         noWord: "Hiç kelimeniz yok: ",
         result: "sonuç bulundu.",
         filter: "Filtre",
@@ -110,7 +114,9 @@ export let strings = new LocalizedStrings({
         rememberMe: "Beni hatırla",
         dontHaveAccount: "Hesabınız yok mu?",
         forgotYourPassword: "Şifrenizi mi unuttunuz?",
-        loginLoading: "Giriş yapılıyor...",
-        orSignInWith: "Veya:"
+        loginLoading: "Giriş yapılıyor",
+        orSignInWith: "Veya:",
+        creatingUser: "Kullanıcı oluşturuluyor",
+        socialEmailChangeInfo: "Sosyal medya girişlerinde email düzenleme devre dışı"
     }
 });

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { COLORS } from '../utils/colors'
 import TYPOGRAPHY from '../utils/typography'
 import { strings } from '../utils/localization';
@@ -24,7 +24,16 @@ const CustomButton = (props) => {
         ]}
             disabled={props.disabled}
             onPress={props.onPress}>
-            <Text style={[TYPOGRAPHY.H4Semibold, { color: props.title == strings.edit ? COLORS.switchInactiveCircleColor : COLORS.white }]}>{props.title}</Text>
+            <View style={styles.loadingView}>
+                <Text style={[TYPOGRAPHY.H4Semibold, { color: props.title == strings.edit ? COLORS.switchInactiveCircleColor : COLORS.white }]}>{
+                    props.loading ?
+                        props.title == strings.complete ?
+                            strings.creatingUser :
+                            strings.loginLoading :
+                        props.title
+                }</Text>
+                {props.loading && <ActivityIndicator color={COLORS.white} style={{ marginLeft: 8 }}></ActivityIndicator>}
+            </View>
         </Pressable>
     )
 }
@@ -34,6 +43,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 32,
+    },
+    loadingView: {
+        flexDirection: 'row'
     }
 });
 

@@ -108,7 +108,9 @@ const Register = ({ navigation }) => {
                             pageNumber != 2 ?
                                 setPageNumber(pageNumber + 1) : register()
                         }}
-                        disabled={pageNumber == 1 ? !validateEmail(email) || !username : pageNumber == 2 && !password || !passwordAgain || password != passwordAgain} />}
+                        disabled={pageNumber == 1 ? !validateEmail(email) || !username : pageNumber == 2 && !password || !passwordAgain || password != passwordAgain}
+                        loading={isLoading} />}
+
                 <View style={styles.dontHaveAnAccount}>
                     <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText }]}>{strings.alreadyHaveAccount}</Text>
                     <TouchableOpacity
