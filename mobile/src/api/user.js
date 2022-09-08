@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:3000"
+import { BASE_URL } from "@env"
+
 export const registerUser = async (
     username,
     email,

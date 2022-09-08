@@ -1,5 +1,5 @@
+import { BASE_URL } from "@env"
 
-const BASE_URL = "http://localhost:3000"
 export const translateWord = async (
     token,
     main,
@@ -33,6 +33,7 @@ export const getAllWordsHistory = async (
     token,
     params
 ) => {
+
     try {
         const response = await fetch(`${BASE_URL}/words?${params}`, {
             method: 'GET',

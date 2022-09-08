@@ -11,13 +11,13 @@ import HomeBasicHeader from '../../components/CustomHeader';
 import CustomButton from '../../components/CustomButton';
 import { CustomTextInputMultiline } from '../../components/CustomInputText';
 import { AuthContext } from '../../context/Auth';
-import { updateUser, getProfile, deleteUser } from '../../api/user';
-import { customFailMessage, customInfoMessage, customSuccessMessage } from '../../utils/show_messages';
+import { updateUser, getProfile } from '../../api/user';
+import { customFailMessage, customSuccessMessage } from '../../utils/show_messages';
 import { strings } from '../../utils/localization';
 
 const UserInfo = ({ navigation }) => {
-    const [username, onChangeUsername] = useState("-")
-    const [email, onChangeEmail] = useState("-")
+    const [username, onChangeUsername] = useState(null)
+    const [email, onChangeEmail] = useState(null)
     const [socialLogin, setSocialLogin] = useState(true)
     const windowHeight = Dimensions.get('window').height;
     const { token, removeToken } = useContext(AuthContext)
@@ -36,18 +36,6 @@ const UserInfo = ({ navigation }) => {
         }
     }
 
-    const deleteUser = async () => {
-        try {
-            let response = await deleteUser(token)
-            if (response.error) {
-                customFailMessage(strings.customFailMessage1)
-            } else {
-                removeToken()
-            }
-        } catch (error) {
-            customFailMessage(strings.customFailMessage1)
-        }
-    }
 
 
     const getProfileMethod = async () => {
@@ -97,15 +85,6 @@ const UserInfo = ({ navigation }) => {
 
                 </View>
                 <View>
-                    <View style={{ width: '100%', alignSelf: 'center', marginBottom: 24, }}>
-                        <CustomButton
-                            verticalPadding={windowHeight / 50}
-                            title={strings.deleteAccount}
-                            onPress={
-                                () => { deleteUser() }
-                            }
-                            disabled={false} />
-                    </View>
                     <View style={{ marginBottom: 32, flexDirection: 'row', justifyContent: 'center' }}>
                         <View style={{ width: '50%' }}>
                             <CustomButton
@@ -117,6 +96,7 @@ const UserInfo = ({ navigation }) => {
                                 disabled={false} />
                         </View>
                         <View width={16} />
+
                         <View style={{ width: '50%' }}>
                             <CustomButton
                                 verticalPadding={windowHeight / 50}

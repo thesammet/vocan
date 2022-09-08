@@ -9,23 +9,22 @@ const CustomButton = (props) => {
         <Pressable style={({ pressed }) => [
             {
                 backgroundColor:
-                    props.title == strings.deleteAccount ?
-                        COLORS.pickedFavHisColor :
-                        props.title == strings.edit || props.title == strings.signOut || props.title == strings.cancel ?
-                            COLORS.disabledButton :
-                            !props.disabled ?
-                                pressed
-                                    ? COLORS.paleBlue
-                                    : COLORS.mainBlue
-                                : COLORS.disabledButton,
+
+                    props.title == strings.edit || props.title == strings.signOut || props.title == strings.cancel || props.title == strings.deleteAccount ?
+                        COLORS.disabledButton :
+                        !props.disabled ?
+                            pressed
+                                ? COLORS.paleBlue
+                                : COLORS.mainBlue
+                            : COLORS.disabledButton,
                 paddingVertical: props.verticalPadding,
             },
             styles.button
         ]}
             disabled={props.disabled}
-            onPress={props.onPress}>
+            onPress={props.onPress} >
             <View style={styles.loadingView}>
-                <Text style={[TYPOGRAPHY.H4Semibold, { color: props.title == strings.edit ? COLORS.switchInactiveCircleColor : COLORS.white }]}>{
+                <Text style={[TYPOGRAPHY.H4Semibold, { color: props.title == strings.edit ? COLORS.switchInactiveCircleColor : props.title == strings.deleteAccount ? COLORS.mainRed : COLORS.white }]}>{
                     props.loading ?
                         props.title == strings.complete ?
                             strings.creatingUser :
@@ -34,7 +33,7 @@ const CustomButton = (props) => {
                 }</Text>
                 {props.loading && <ActivityIndicator color={COLORS.white} style={{ marginLeft: 8 }}></ActivityIndicator>}
             </View>
-        </Pressable>
+        </Pressable >
     )
 }
 

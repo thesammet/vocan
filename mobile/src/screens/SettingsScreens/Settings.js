@@ -9,7 +9,8 @@ import {
     Platform,
     NativeModules,
     Linking,
-    ActivityIndicator
+    ActivityIndicator,
+    ScrollView
 } from 'react-native';
 import TYPOGRAPHY from '../../utils/typography'
 import { COLORS } from '../../utils/colors'
@@ -18,8 +19,8 @@ import CustomButton from '../../components/CustomButton';
 import { ChevronRight } from '../../components/icons';
 import { Switch } from 'react-native-switch';
 import CustomModal from '../../components/CustomModal';
-import PasswordModal from '../../components/PasswordModal';
-import { getProfile, wordHistory } from '../../api/user';
+import CustomDeleteModal from '../../components/CustomDeleteModal';
+import { getProfile, wordHistory, deleteUser } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
 import { customFailMessage, customInfoMessage } from '../../utils/show_messages';
 import { strings } from '../../utils/localization';
@@ -33,14 +34,14 @@ const SettingsScreen = ({ navigation }) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const [isPasswordModalVisible, setPasswordModalVisible] = useState(false);
-    const togglePasswordModal = () => {
-        setPasswordModalVisible(!isPasswordModalVisible);
+    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+    const toggleDeleteModal = () => {
+        setIsDeleteModalVisible(!isDeleteModalVisible);
     };
     const [username, setUsername] = useState(null)
     const [email, setEmail] = useState(null)
     const [socialLogin, setSocialLogin] = useState(true)
-    const { token } = useContext(AuthContext)
+    const { token, removeToken } = useContext(AuthContext)
     const bottomSheet = useRef();
     const [selectedLanguage, setSelectedLanguage] = useState(null)
 
@@ -74,6 +75,25 @@ const SettingsScreen = ({ navigation }) => {
                 customFailMessage(strings.customFailMessage1)
             } else {
                 setRememberMeSwitchValue(response.data.history)
+            }
+        } catch (error) {
+            customFailMessage(strings.customFailMessage1)
+        }
+    }
+
+
+    const deleteUserMethod = async () => {
+        try {
+            let response = await deleteUser(token)
+            if (response.error) {
+                customFailMessage(strings.customFailMessage1)
+            } else {
+                toggleDeleteModal()
+                customInfoMessage(strings.customInfoMessage2)
+                setTimeout(() => {
+                    removeToken()
+                }, 2000);
+
             }
         } catch (error) {
             customFailMessage(strings.customFailMessage1)
@@ -126,88 +146,95 @@ const SettingsScreen = ({ navigation }) => {
                 />
             </BottomSheet>
             <CustomModal title={strings.modal1} isModalVisible={isModalVisible} toggleModal={toggleModal} />
-            <PasswordModal title={strings.modal2} isModalVisible={isPasswordModalVisible} toggleModal={togglePasswordModal} navigateToPage={() => {
-                navigation.navigate('Password');
-                togglePasswordModal();
-            }} />
+            <CustomDeleteModal title={strings.modal3} isModalVisible={isDeleteModalVisible} toggleModal={toggleDeleteModal} deleteAccount={() => { deleteUserMethod() }} />
 
-            <View style={{ justifyContent: 'space-between', flex: 1 }}>
-                <View>
-                    {!username || !email ?
-                        <ActivityIndicator style={styles.userInfoGroup} color={COLORS.paleBlue}></ActivityIndicator>
-                        :
-                        <View style={styles.userInfoGroup}>
-                            <Text style={[TYPOGRAPHY.H2Semibold, { color: COLORS.white, alignSelf: 'center', textAlign: 'center' }]}>{username}</Text>
-                            <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText, alignSelf: 'center', textAlign: 'center' }]}>{email}</Text>
-                        </View>}
+            <ScrollView>
+                <View style={{ justifyContent: 'space-between', flex: 1 }}>
+                    <View>
+                        {!username || !email ?
+                            <ActivityIndicator style={styles.userInfoGroup} color={COLORS.paleBlue}></ActivityIndicator>
+                            :
+                            <View style={styles.userInfoGroup}>
+                                <Text style={[TYPOGRAPHY.H2Semibold, { color: COLORS.white, alignSelf: 'center', textAlign: 'center' }]}>{username}</Text>
+                                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.inputHintText, alignSelf: 'center', textAlign: 'center' }]}>{email}</Text>
+                            </View>}
 
-                    <View style={{ width: '30%', alignSelf: 'center' }}>
+                        <View style={{ width: '30%', alignSelf: 'center' }}>
+                            <CustomButton
+                                verticalPadding={8}
+                                title={strings.edit}
+                                onPress={() => {
+                                    navigation.navigate('UserInfo')
+                                }}
+                                disabled={false} />
+                        </View>
+                        <View style={[styles.dividerView, { borderBottomColor: COLORS.disabledButton }]}></View>
+                        <TouchableOpacity activeOpacity={.5} onPress={() => { socialLogin ? customInfoMessage(strings.customInfoMessage1) : navigation.navigate('Password') }}>
+                            <View style={[styles.settingsGroup, { marginBottom: 24 }]}>
+                                <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{strings.password}</Text>
+                                <ChevronRight width={28} height={28} color="#101010" />
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity activeOpacity={.5} onPress={() => _openAppSetting()}>
+                            <View style={{ marginBottom: 24 }}>
+                                <View style={styles.settingsGroup}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{strings.language}</Text>
+                                        <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText }]}> ({deviceLanguage.split("_")[0].toUpperCase()})</Text>
+                                    </View>
+                                    <ChevronRight width={28} height={28} color="#101010" />
+                                </View>
+                                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText, marginHorizontal: 38 }]}>{strings.languageHint
+                                }</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <View style={styles.settingsGroup}>
+                            <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white, flex: 1 }]}>{strings.wordHistory}</Text>
+                            <Switch
+                                value={rememberMeSwitchValue}
+                                onValueChange={(val) => {
+                                    setRememberMeSwitchValue(val);
+                                    wordHistoryMethod()
+                                }}
+                                circleSize={30}
+                                barHeight={30}
+                                circleBorderWidth={3}
+                                backgroundActive={COLORS.mainBlue}
+                                backgroundInactive={COLORS.inputBorder}
+                                circleActiveColor={COLORS.white}
+                                circleInActiveColor={COLORS.switchInactiveCircleColor}
+                                changeValueImmediately={true}
+                                switchRightPx={2}
+                                switchWidthMultiplier={2}
+                                switchBorderRadius={8}
+                                renderActiveText={false}
+                                renderInActiveText={false}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={{ marginTop: 48, marginHorizontal: 48 }}>
                         <CustomButton
-                            verticalPadding={8}
-                            title={strings.edit}
+                            verticalPadding={windowHeight / 50}
+                            title={strings.signOut}
                             onPress={() => {
-                                navigation.navigate('UserInfo')
+                                toggleModal()
                             }}
                             disabled={false} />
                     </View>
-                    <View style={[styles.dividerView, { borderBottomColor: COLORS.disabledButton }]}></View>
-                    <TouchableOpacity activeOpacity={.5} onPress={() => { socialLogin ? customInfoMessage(strings.customInfoMessage1) : navigation.navigate('Password') }}>
-                        <View style={[styles.settingsGroup, { marginBottom: 24 }]}>
-                            <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{strings.password}</Text>
-                            <ChevronRight width={28} height={28} color="#101010" />
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity activeOpacity={.5} onPress={() => _openAppSetting()}>
-                        <View style={{ marginBottom: 24 }}>
-                            <View style={styles.settingsGroup}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white }]}>{strings.language}</Text>
-                                    <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.inputHintText }]}> ({deviceLanguage.split("_")[0].toUpperCase()})</Text>
-                                </View>
-                                <ChevronRight width={28} height={28} color="#101010" />
-                            </View>
-                            <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.paleText, marginHorizontal: 38 }]}>{strings.languageHint
-                            }</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <View style={styles.settingsGroup}>
-                        <Text style={[TYPOGRAPHY.H4Regular, { color: COLORS.white, flex: 1 }]}>{strings.wordHistory}</Text>
-                        <Switch
-                            value={rememberMeSwitchValue}
-                            onValueChange={(val) => {
-                                setRememberMeSwitchValue(val);
-                                wordHistoryMethod()
-                            }}
-                            circleSize={30}
-                            barHeight={30}
-                            circleBorderWidth={3}
-                            backgroundActive={COLORS.mainBlue}
-                            backgroundInactive={COLORS.inputBorder}
-                            circleActiveColor={COLORS.white}
-                            circleInActiveColor={COLORS.switchInactiveCircleColor}
-                            changeValueImmediately={true}
-                            switchRightPx={2}
-                            switchWidthMultiplier={2}
-                            switchBorderRadius={8}
-                            renderActiveText={false}
-                            renderInActiveText={false}
-                        />
+                    <View style={{ marginTop: 16, marginBottom: 32, marginHorizontal: 48 }}>
+                        <CustomButton
+                            verticalPadding={windowHeight / 50}
+                            title={strings.deleteAccount}
+                            onPress={
+                                () => { toggleDeleteModal() }
+                            }
+                            disabled={false} />
                     </View>
                 </View>
-
-                <View style={{ marginBottom: 16, marginHorizontal: 48 }}>
-                    <CustomButton
-                        verticalPadding={windowHeight / 50}
-                        title={strings.signOut}
-                        onPress={() => {
-                            toggleModal()
-                        }}
-                        disabled={false} />
-                </View>
-
-            </View>
+            </ScrollView>
         </View >
 
     )
