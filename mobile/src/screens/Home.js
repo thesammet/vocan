@@ -104,9 +104,10 @@ const Home = ({ navigation }) => {
                     <View style={{ marginVertical: 16 }}>
                         <TranslateButton
                             verticalPadding={16}
-                            title={loading ? strings.loading : strings.translate}
+                            title={strings.translate}
                             onPress={() => { translateMethod(); Keyboard.dismiss() }}
-                            disabled={!text || loading} />
+                            disabled={!text || loading}
+                            loading={loading} />
                     </View>
                     <InputArea
                         placeholder={strings.translation}

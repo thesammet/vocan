@@ -58,7 +58,13 @@ export let strings = new LocalizedStrings({
         loginLoading: "Logging in",
         orSignInWith: "Or login with:",
         creatingUser: "Creating User",
-        socialEmailChangeInfo: "Email editing disabled on social media login"
+        socialEmailChangeInfo: "Email editing disabled on social media login",
+        terms: "Terms and conditions",
+        termsShort: "Terms",
+        policy: "Privacy policy",
+        policyShort: "Privacy",
+        acceptPrivTerms: "When creating an account, you agree to the following:"
+
     },
     tr: {
         translate: "Çevir",
@@ -117,6 +123,11 @@ export let strings = new LocalizedStrings({
         loginLoading: "Giriş yapılıyor",
         orSignInWith: "Veya:",
         creatingUser: "Kullanıcı oluşturuluyor",
-        socialEmailChangeInfo: "Sosyal medya girişlerinde email düzenleme devre dışı"
+        socialEmailChangeInfo: "Sosyal medya girişlerinde email düzenleme devre dışı",
+        terms: "Kullanım koşulları",
+        termsShort: "Kul. koşulları",
+        policy: "Gizlilik politikası",
+        policyShort: "Gizlilik",
+        acceptPrivTerms: "Hesap oluştururken aşağıdakileri kabul etmiş sayılırsınız:"
     }
 });

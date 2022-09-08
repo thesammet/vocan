@@ -11,7 +11,7 @@ router.post('/words', auth, async (req, res) => {
     const translated = `${req.body.from == "auto-detect" ? translateObject.language.from : req.body.from}-${req.body.to}`
     const languages = translated.split('-')
     const myWord = new Word({ ...req.body, owner: req.user._id, mean, translated })
-    const savedWord = await Word.findOne({ main: req.body.main, owner: req.user._id })
+    const savedWord = await Word.findOne({ mean, owner: req.user._id })
 
     try {
         if (!savedWord && languages[0] != languages[1] && req.user.history) {

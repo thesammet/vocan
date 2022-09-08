@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { COLORS } from '../../utils/colors'
 import TYPOGRAPHY from '../../utils/typography'
-import { VocanIcon } from '../../components/icons';
+import { ChevronLeft, VocanIcon } from '../../components/icons';
 import CustomButton from '../../components/CustomButton';
 import { registerUser } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
@@ -52,8 +52,18 @@ const Register = ({ navigation }) => {
                 <VocanIcon style={{ height: 50 }} />
                 <Text style={styles.registerText}>{strings.register}</Text>
             </View>
+
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                {pageNumber == 2 &&
+                    <TouchableOpacity
+                        onPress={() => { pageNumber == 2 && setPageNumber(pageNumber - 1) }}
+                        activeOpacity={.5}>
+                        <View style={styles.backView}>
+                            <ChevronLeft width={36} height={36}></ChevronLeft>
+                            <Text style={[TYPOGRAPHY.H5Bold, { color: COLORS.mainBlue }]}>{strings.back}</Text>
+                        </View>
+                    </TouchableOpacity>}
                 {pageNumber == 1 ?
                     <View style={styles.inputGroup}>
                         <CustomTextInputMultiline
@@ -84,15 +94,24 @@ const Register = ({ navigation }) => {
                             autoCapitalize='none'
                             value={passwordAgain} />
                     </View>}
-                {pageNumber == 1 ?
-                    <View />
-                    :
-                    <TouchableOpacity
-                        onPress={() => { pageNumber == 2 && setPageNumber(pageNumber - 1) }}
-                        activeOpacity={.5}>
-                        <Text style={[TYPOGRAPHY.H5Bold, { color: COLORS.mainBlue, marginLeft: 8 }]}>{strings.back}</Text>
-                    </TouchableOpacity>}
+                {pageNumber == 2 &&
+
+                    <View >
+                        <Text style={[TYPOGRAPHY.H6Semibold, { color: COLORS.inputHintText, marginHorizontal: 8 }]}>{strings.acceptPrivTerms}</Text>
+                        <TouchableOpacity
+                            onPress={() => { navigation.navigate("PrivacyTerms", { type: "terms" }) }}
+                            activeOpacity={.5}>
+                            <Text style={[TYPOGRAPHY.H6Semibold, styles.privTermText]}>-{strings.terms}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => { navigation.navigate("PrivacyTerms", { type: "policy" }) }}
+                            activeOpacity={.5}>
+                            <Text style={[TYPOGRAPHY.H6Semibold, styles.privTermText]}>-{strings.policy}</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
             </KeyboardAvoidingView >
+
             <View>
                 <View style={styles.circleGroup}>
                     <View style={[styles.circle, { backgroundColor: pageNumber == 1 ? COLORS.mainBlue : COLORS.inputBorder }]} />
@@ -121,7 +140,7 @@ const Register = ({ navigation }) => {
 
                 </View>
             </View>
-        </TouchableOpacity>
+        </TouchableOpacity >
     )
 }
 
@@ -164,6 +183,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         marginTop: 24
+    },
+    backView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 8
+    },
+    privTermText: {
+        color: COLORS.mainBlue,
+        marginLeft: 8,
+        textDecorationLine: 'underline'
     }
 })
 

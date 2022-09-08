@@ -1,7 +1,8 @@
 import React from 'react'
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, StyleSheet, Pressable, ActivityIndicator, View } from 'react-native';
 import { COLORS } from '../utils/colors'
 import TYPOGRAPHY from '../utils/typography'
+import { strings } from '../utils/localization';
 
 const TranslateButton = (props) => {
     return (
@@ -21,7 +22,11 @@ const TranslateButton = (props) => {
         ]}
             disabled={props.disabled}
             onPress={props.onPress}>
-            <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.white }]}>{props.title}</Text>
+            <View style={styles.loadingView}>
+                <Text style={[TYPOGRAPHY.H5Regular, { color: COLORS.white }]}>{props.loading ? strings.loading : props.title}</Text>
+                {props.loading && <ActivityIndicator color={COLORS.white} style={{ marginLeft: 8 }}></ActivityIndicator>}
+            </View>
+
         </Pressable>
     )
 }
@@ -32,6 +37,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 32,
         borderWidth: 1
+    },
+    loadingView: {
+        flexDirection: 'row'
     }
 });
 
