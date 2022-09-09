@@ -236,7 +236,6 @@ const SettingsScreen = ({ navigation }) => {
                 </View>
             </ScrollView>
         </View >
-
     )
 }
 
