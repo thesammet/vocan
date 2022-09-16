@@ -17,7 +17,7 @@ const PrivacyTerms = ({ navigation, route }) => {
                 title={route.params.type == "terms" ? strings.termsShort : strings.policyShort}
                 isNavBack={true}
             />
-            <ScrollView>
+            <ScrollView style={{ marginHorizontal: 16, paddingTop: 16 }}>
                 <RenderHtml
                     contentWidth={width}
                     source={source}

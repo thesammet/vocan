@@ -112,7 +112,8 @@ const Home = ({ navigation }) => {
                                         translateMethod();
                                         Keyboard.dismiss()
                                     } else {
-                                        customInfoMessage(strings.mustAuthorize)
+                                        customInfoMessage(strings.mustAuthorize);
+                                        Keyboard.dismiss()
                                     }
                                 }}
                                 disabled={!text || loading}

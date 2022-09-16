@@ -16,6 +16,7 @@ import { registerUser } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
 import { validateEmail } from '../../utils/helper_functions';
 import { strings } from '../../utils/localization';
+import { customFailMessage } from '../../utils/show_messages';
 
 const Register = ({ navigation }) => {
     const [username, onChangeUsername] = useState(null)
