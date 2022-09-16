@@ -9,7 +9,7 @@ import HistoryFavItem from '../components/HistoryFavItem';
 import { getAllWordsHistory, favouriteWord, getFavouriteWords } from '../api/word';
 import { AuthContext } from '../context/Auth'
 import NoWordView from '../components/NoWordView';
-import { customFailMessage } from '../utils/show_messages';
+import { customFailMessage, customInfoMessage } from '../utils/show_messages';
 import { strings } from '../utils/localization';
 import { Search, SearchBold, Filter, FilterBold } from '../components/icons';
 import FilterView from '../components/FilterView'
@@ -78,9 +78,10 @@ const HistoryFav = ({ navigation }) => {
     }
 
     useEffect(() => {
-        getAllWords(historyFavPicker, filterDescending)
         const unsubscribe = navigation.addListener('focus', () => {
-            getAllWords(historyFavPicker, filterDescending)
+            token ?
+                getAllWords(historyFavPicker, filterDescending) :
+                customInfoMessage(strings.mustAuthorize)
         });
         return unsubscribe;
     }, [navigation]);
@@ -95,7 +96,9 @@ const HistoryFav = ({ navigation }) => {
                 <Text style={styles.headerText}>{strings.historyFav}</Text>
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity activeOpacity={.5} onPress={() => {
-                        setSortingOption(1);
+                        token ?
+                            setSortingOption(1) :
+                            customInfoMessage(strings.mustAuthorize)
                         searchOut()
                         sortingOption == 1 && setSortingOption(0)
                     }}>
@@ -103,7 +106,9 @@ const HistoryFav = ({ navigation }) => {
                     </TouchableOpacity>
                     <View style={{ width: 8 }} />
                     <TouchableOpacity activeOpacity={.5} onPress={() => {
-                        setSortingOption(2);
+                        token ?
+                            setSortingOption(2) :
+                            customInfoMessage(strings.mustAuthorize)
                         searchOut()
                         sortingOption == 2 && setSortingOption(0)
                     }}>
@@ -127,7 +132,10 @@ const HistoryFav = ({ navigation }) => {
                         <SearchInputView
                             placeholder={strings.search}
                             value={searchText}
-                            onChangeText={(value) => { setSearchText(value); searchAlgorithm(value) }}
+                            onChangeText={(value) => {
+                                setSearchText(value);
+                                searchAlgorithm(value)
+                            }}
                             edit={true}
                             clearText={() => { setSearchText(''); Keyboard.dismiss(); setFilteredData(historyData) }}
                             text={searchText}
@@ -138,18 +146,26 @@ const HistoryFav = ({ navigation }) => {
 
             <View style={[styles.historyFavGroup, { backgroundColor: COLORS.inputBg }]}>
                 <TouchableOpacity activeOpacity={.5} style={{ width: '50%' }} onPress={() => {
-                    setHistoryFavPicker(1)
-                    getAllWords(1, filterDescending)
-                    searchOut()
+                    if (token) {
+                        setHistoryFavPicker(1)
+                        getAllWords(1, filterDescending)
+                        searchOut()
+                    } else {
+                        customInfoMessage(strings.mustAuthorize)
+                    }
                 }}>
                     <View style={{ padding: 16, backgroundColor: historyFavPicker == 1 ? COLORS.pickedFavHisColor : 'transparent', borderRadius: historyFavPicker == 1 ? 16 : 0, }}>
                         <Text style={[historyFavPicker == 1 ? TYPOGRAPHY.H5Regular : TYPOGRAPHY.H5Bold, { color: historyFavPicker == 1 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center' }]}>{strings.history}</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={.5} style={{ width: '50%', }} onPress={() => {
-                    setHistoryFavPicker(2)
-                    getAllWords(2, filterDescending)
-                    searchOut()
+                    if (token) {
+                        setHistoryFavPicker(2)
+                        getAllWords(2, filterDescending)
+                        searchOut()
+                    } else {
+                        customInfoMessage(strings.mustAuthorize)
+                    }
                 }}>
                     <View style={{ padding: 16, backgroundColor: historyFavPicker == 2 ? COLORS.pickedFavHisColor : 'transparent', borderRadius: historyFavPicker == 2 ? 16 : 0, }}>
                         <Text style={[historyFavPicker == 2 ? TYPOGRAPHY.H5Regular : TYPOGRAPHY.H5Bold, { color: historyFavPicker == 2 ? COLORS.white : COLORS.inputHintText, alignSelf: 'center' }]}>{strings.favorite}</Text>
@@ -191,13 +207,6 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
         paddingLeft: 32,
         paddingRight: 24,
-        shadowColor: 'white',
-        shadowOffset: {
-            width: 3,
-            height: 5,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 15,
     },
     headerText: {
         fontSize: 33,

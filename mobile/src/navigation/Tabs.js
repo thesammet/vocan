@@ -33,7 +33,7 @@ const Tabs = () => {
                     options={{
                         title: 'Home',
                         headerShown: false,
-                        tabBarIcon: ({ focused, color, size }) => {
+                        tabBarIcon: ({ focused }) => {
                             return focused ? (
                                 <Globe width={32} height={32} />
                             ) : (
@@ -55,7 +55,7 @@ const Tabs = () => {
                     options={{
                         title: 'Word Box',
                         headerShown: false,
-                        tabBarIcon: ({ focused, color, size }) => {
+                        tabBarIcon: ({ focused }) => {
                             return focused ? (
                                 <Fav width={32} height={32} />
                             ) : (
@@ -64,8 +64,6 @@ const Tabs = () => {
                                 </View>
                             );
                         },
-                        tabBarItemStyle: {},
-
                         tabBarActiveTintColor: '#00BC6B',
                         tabBarLabelStyle: {
                             fontSize: 10,
@@ -79,7 +77,7 @@ const Tabs = () => {
                     options={{
                         title: 'Settings',
                         headerShown: false,
-                        tabBarIcon: ({ focused, color, size }) => {
+                        tabBarIcon: ({ focused }) => {
                             return focused ? (
                                 <Settings width={32} height={32} />
                             ) : (
@@ -88,7 +86,6 @@ const Tabs = () => {
                                 </View>
                             );
                         },
-                        tabBarItemStyle: {},
                         tabBarActiveTintColor: '#00BC6B',
                         tabBarLabelStyle: {
                             fontSize: 10,

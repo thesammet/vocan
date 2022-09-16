@@ -20,7 +20,7 @@ const UserInfo = ({ navigation }) => {
     const [email, onChangeEmail] = useState(null)
     const [socialLogin, setSocialLogin] = useState(true)
     const windowHeight = Dimensions.get('window').height;
-    const { token, removeToken } = useContext(AuthContext)
+    const { token } = useContext(AuthContext)
 
     const updateUserMethod = async () => {
         try {

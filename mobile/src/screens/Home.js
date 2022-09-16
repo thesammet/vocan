@@ -15,7 +15,7 @@ import { translateWord } from '../api/word';
 import { Capitalize } from '../utils/helper_functions'
 import { AuthContext } from '../context/Auth';
 import { strings } from '../utils/localization';
-import { customFailMessage } from '../utils/show_messages';
+import { customFailMessage, customInfoMessage } from '../utils/show_messages';
 
 const Home = ({ navigation }) => {
     const { mainLanguage, addMainLanguage, translatedLanguage, addTranslatedLanguage } = useContext(LanguageContext)
@@ -71,7 +71,7 @@ const Home = ({ navigation }) => {
                     title={strings.translateArea}
                     isNavBack={false}
                 />
-                <View style={styles.searchView}>
+                <View >
                     <View style={styles.translatedLanguageGroup}>
                         <TouchableOpacity style={styles.languageSelectView} activeOpacity={0.5} onPress={() => { setLanguageSelector(1); bottomSheet.current.show(); }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', flex: 1 }}>
@@ -93,29 +93,39 @@ const Home = ({ navigation }) => {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <InputArea
-                        placeholder={strings.enterText}
-                        value={text}
-                        onChangeText={(value) => setText(value)}
-                        edit={true}
-                        clearText={() => { setText(''); setMean('') }}
-                        text={text}
-                    />
-                    <View style={{ marginVertical: 16 }}>
-                        <TranslateButton
-                            verticalPadding={16}
-                            title={strings.translate}
-                            onPress={() => { translateMethod(); Keyboard.dismiss() }}
-                            disabled={!text || loading}
-                            loading={loading} />
+                    <View style={[styles.dividerView]}></View>
+                    <View style={styles.translateView}>
+                        <InputArea
+                            placeholder={strings.enterText}
+                            value={text}
+                            onChangeText={(value) => setText(value)}
+                            edit={true}
+                            clearText={() => { setText(''); setMean('') }}
+                            text={text}
+                        />
+                        <View style={{ marginVertical: 16 }}>
+                            <TranslateButton
+                                verticalPadding={16}
+                                title={strings.translate}
+                                onPress={() => {
+                                    if (token) {
+                                        translateMethod();
+                                        Keyboard.dismiss()
+                                    } else {
+                                        customInfoMessage(strings.mustAuthorize)
+                                    }
+                                }}
+                                disabled={!text || loading}
+                                loading={loading} />
+                        </View>
+                        <InputArea
+                            placeholder={strings.translation}
+                            editable={false}
+                            edit={false}
+                            selectTextOnFocus={false}
+                            text={Capitalize(mean)}
+                        />
                     </View>
-                    <InputArea
-                        placeholder={strings.translation}
-                        editable={false}
-                        edit={false}
-                        selectTextOnFocus={false}
-                        text={Capitalize(mean)}
-                    />
                 </View>
             </View>
         </TouchableOpacity>
@@ -129,15 +139,13 @@ const styles = StyleSheet.create({
     keyboarDismissContainer: {
         flex: 1,
     },
-    searchView: {
-        marginHorizontal: 28
-    },
     translatedLanguageGroup: {
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 16,
         marginBottom: 18,
         justifyContent: 'space-between',
+        marginHorizontal: 28
     },
     disabledTranslateView: {
         alignItems: 'center',
@@ -171,6 +179,15 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         borderColor: COLORS.switchInactiveCircleColor,
         borderWidth: 1
+    },
+    dividerView: {
+        borderBottomWidth: 1,
+        width: '100%',
+        borderBottomColor: '#141414',
+        marginBottom: 24
+    },
+    translateView: {
+        marginHorizontal: 28
     }
 })
 export default Home

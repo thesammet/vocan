@@ -9,10 +9,8 @@ import {
     Text,
     Platform
 } from 'react-native';
-import { AppleButton } from '@invertase/react-native-apple-authentication';
 import {
     GoogleSignin,
-    GoogleSigninButton,
     statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
@@ -24,6 +22,8 @@ import CustomButton from '../../components/CustomButton';
 import { VocanIconTextGroup, Icons8Google, AppleBorder } from '../../components/icons';
 import { loginUser, socialLogin } from '../../api/user';
 import { AuthContext } from '../../context/Auth';
+import { GuestContext } from '../../context/Guest';
+
 import { customFailMessage } from '../../utils/show_messages';
 import { validateEmail } from '../../utils/helper_functions';
 import { strings } from '../../utils/localization';
@@ -32,8 +32,8 @@ import { err } from 'react-native-svg/lib/typescript/xml';
 const Login = ({ navigation }) => {
     const [email, onChangeEmail] = useState(null)
     const [password, onChangePassword] = useState("")
-    const [rememberMeSwitchValue, setRememberMeSwitchValue] = useState(false)
     const { addToken } = useContext(AuthContext);
+    const { addGuest } = useContext(GuestContext);
     const [isLoading, setIsLoading] = useState(false);
 
     GoogleSignin.configure({
@@ -149,16 +149,16 @@ const Login = ({ navigation }) => {
                         <TouchableOpacity onPress={() => { onAppleButtonPress() }}>
                             <View style={styles.rowContainer}>
                                 <View style={styles.socialIcon}>
-                                    <AppleBorder width={40} height={40}></AppleBorder>
-                                    <Text style={[TYPOGRAPHY.H3Semibold, styles.socialIconText]}>Apple</Text>
+                                    <AppleBorder width={30} height={30}></AppleBorder>
+                                    <Text style={[TYPOGRAPHY.H3Semibold, styles.socialIconText]}>{strings.loginWith} Apple </Text>
                                 </View>
                             </View>
                         </TouchableOpacity>}
                     <TouchableOpacity onPress={googleSignIn}>
                         <View style={styles.rowContainer}>
                             <View style={styles.socialIcon}>
-                                <Icons8Google width={40} height={40}></Icons8Google>
-                                <Text style={[TYPOGRAPHY.H3Semibold, styles.socialIconText]}>Google</Text>
+                                <Icons8Google width={30} height={30}></Icons8Google>
+                                <Text style={[TYPOGRAPHY.H3Semibold, styles.socialIconText]}>{strings.loginWith} Google</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -170,6 +170,9 @@ const Login = ({ navigation }) => {
                         <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, marginLeft: 8 }]}>{strings.register}</Text>
                     </TouchableOpacity>
                 </View>
+                <TouchableOpacity onPress={() => addGuest('true')} activeOpacity={0.5}>
+                    <Text style={[TYPOGRAPHY.H5Semibold, { color: COLORS.mainBlue, alignSelf: 'center' }]}>{strings.continueAsGuest}</Text>
+                </TouchableOpacity>
 
             </View>
         </TouchableOpacity>
@@ -206,23 +209,26 @@ const styles = StyleSheet.create({
         paddingVertical: 20
     },
     socialIconView: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        marginTop: 8
+        flexDirection: 'column',
+
     },
     socialIcon: {
-        backgroundColor: COLORS.disabledButton,
-        padding: 8,
+        borderWidth: 1,
+        borderColor: COLORS.inputBorder,
+        padding: 4,
         flexDirection: 'row',
-        borderRadius: 12
+        borderRadius: 12,
+        width: '100%',
+        justifyContent: 'center'
     },
     socialIconText: {
-        color: COLORS.mainBlue,
+        color: COLORS.inputHintText,
         alignSelf: 'center',
-        marginLeft: 4
+        marginLeft: 12
     },
     rowContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: 8
     }
 })
 export default Login

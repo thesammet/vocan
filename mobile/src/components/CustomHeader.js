@@ -56,63 +56,12 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
         paddingLeft: 32,
         paddingRight: 24,
-        shadowColor: 'white',
-        shadowOffset: {
-            width: 3,
-            height: 5,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 15,
     },
     textNavFalse: {
         fontSize: 33,
         color: COLORS.white,
         fontWeight: '400',
         fontFamily: 'DMSerifDisplay-Regular'
-    },
-    textNavTrue: {
-        fontSize: 21,
-        color: 'white',
-        fontWeight: '500',
-    },
-    textGame: {
-        fontSize: 15,
-        flexWrap: 'wrap',
-        flex: 1,
-        paddingHorizontal: 20,
-        textAlign: 'center',
-    },
-    dividerSub: {
-        borderBottomWidth: 1,
-        borderRadius: 4,
-        width: '100%',
-    },
-    arrowLeftContainer: {
-        backgroundColor: 'white',
-        borderRadius: 16,
-        padding: 8,
-    },
-    backgroundImage: {
-        alignItems: 'flex-start',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        flex: 1,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.06,
-        shadowRadius: 6,
-    },
-    backgroundImageHome: {
-        alignItems: 'center',
-        flex: 1,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.06,
-        shadowRadius: 6,
     },
 });
 

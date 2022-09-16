@@ -5,6 +5,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { AuthProvider } from './context/Auth';
 import { LanguageProvider } from './context/Language';
 import SplashScreen from 'react-native-splash-screen';
+import { GuestProvider } from './context/Guest';
 
 const App = () => {
   useEffect(() => {
@@ -15,17 +16,19 @@ const App = () => {
     <SafeAreaProvider >
       <AuthProvider>
         <LanguageProvider>
-          <SafeAreaView
-            style={{
-              flex: 1,
-              backgroundColor: 'black',
-            }}>
-            <StatusBar
-              animated={true}
-              barStyle='light-content'
-            />
-            <Navigation />
-          </SafeAreaView>
+          <GuestProvider>
+            <SafeAreaView
+              style={{
+                flex: 1,
+                backgroundColor: 'black',
+              }}>
+              <StatusBar
+                animated={true}
+                barStyle='light-content'
+              />
+              <Navigation />
+            </SafeAreaView>
+          </GuestProvider>
         </LanguageProvider>
       </AuthProvider>
     </SafeAreaProvider>

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Settings from '../screens/SettingsScreens/Settings'
-import Password from '../screens/SettingsScreens/Password'
-import UserInfo from '../screens/SettingsScreens/UserInfo'
+import Settings from '../screens/SettingScreens/Settings'
+import Password from '../screens/SettingScreens/Password'
+import UserInfo from '../screens/SettingScreens/UserInfo'
+import UnauthorizedSettings from '../screens/SettingScreens/UnauthorizedSettings';
+import Auth from '../navigation/Auth'
+import { AuthContext } from '../context/Auth';
 
 const Stack = createNativeStackNavigator();
 
 const SettingsStack = () => {
+    const { token } = useContext(AuthContext)
     return (
         <>
             <Stack.Navigator
@@ -20,7 +24,7 @@ const SettingsStack = () => {
                 }}>
                 <Stack.Screen
                     name="Settings"
-                    component={Settings}
+                    component={token ? Settings : UnauthorizedSettings}
                     options={{
                         headerShown: false,
                     }}
@@ -39,7 +43,13 @@ const SettingsStack = () => {
                         headerShown: false,
                     }}
                 />
-
+                <Stack.Screen
+                    name="Auth"
+                    component={Auth}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
             </Stack.Navigator>
         </>
     );

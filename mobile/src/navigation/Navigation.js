@@ -4,14 +4,16 @@ import { NavigationContainer } from '@react-navigation/native'
 import Tabs from './Tabs'
 import Auth from './Auth'
 import { AuthContext } from '../context/Auth';
+import { GuestContext } from '../context/Guest'
 
 
 const Navigation = () => {
     let { token } = useContext(AuthContext)
+    let { guest } = useContext(GuestContext)
 
     return (
         <NavigationContainer>
-            <View style={{ flex: 1 }}>{token ? <Tabs /> : <Auth />}</View>
+            {guest || token ? <Tabs /> : <Auth />}
         </NavigationContainer >
     );
 }

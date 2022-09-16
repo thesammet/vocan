@@ -13,7 +13,7 @@ export let strings = new LocalizedStrings({
         edit: "Edit",
         language: "Language",
         languageHint: "The application language changes automatically according to your device language.",
-        wordHistory: "Word history",
+        wordHistory: "Save history",
         signOut: "Sign Out",
         profile: "Profile",
         username: "Username",
@@ -65,21 +65,26 @@ export let strings = new LocalizedStrings({
         termsShort: "Terms",
         policy: "Privacy policy",
         policyShort: "Privacy",
-        acceptPrivTerms: "When creating an account, you agree to the following:"
+        acceptPrivTerms: "When creating an account, you agree to the following:",
+        mustAuthorize: "You must be logged into your account to use this feature.",
+        continueAsGuest: "Continue as guest",
+        mustLogin: "You must be logged in to use the application with all its features.",
+        loginWith: "Sign in with"
     },
+
     tr: {
         translate: "Çevir",
         translateArea: "Çeviri Yeri",
         enterText: "Metin girin",
         translation: "Tercüme",
         historyFav: "Geçmiş/Favoriler",
-        history: "Gemiş",
+        history: "Geçmiş",
         favorite: "Favoriler",
         settings: "Ayarlar",
         edit: "Düzenle",
         language: "Dil",
         languageHint: "Uygulama dili, cihaz dilinize göre otomatik değişmektedir.",
-        wordHistory: "Kelime geçmişi",
+        wordHistory: "Geçmişi kaydet",
         signOut: "Çıkış Yap",
         profile: "Profil",
         username: "Kullanıcı adı",
@@ -131,7 +136,11 @@ export let strings = new LocalizedStrings({
         termsShort: "Kul. koşulları",
         policy: "Gizlilik politikası",
         policyShort: "Gizlilik",
-        acceptPrivTerms: "Hesap oluştururken aşağıdakileri kabul etmiş sayılırsınız:"
+        acceptPrivTerms: "Hesap oluştururken aşağıdakileri kabul etmiş sayılırsınız:",
+        mustAuthorize: "Bu özelliği kullanabilmek için hesabınıza giriş yapmalısınız.",
+        continueAsGuest: "Misafir olarak devam et",
+        mustLogin: "Uygulamayı tüm özellikleriyle kullanabilmek için giriş yapmanız gerekmektedir.",
+        loginWith: "Giriş yap:"
     },
     es: {
         translate: "Traducir",
@@ -145,7 +154,7 @@ export let strings = new LocalizedStrings({
         edit: "Editar",
         language: "Idioma",
         languageHint: "El idioma de la aplicación cambia automáticamente según el idioma de su dispositivo.",
-        wordHistory: "Historia de la palabra",
+        wordHistory: "Guardar historial",
         signOut: "Desconectar",
         profile: "Perfil",
         username: "Nombre de usuario",
@@ -197,6 +206,10 @@ export let strings = new LocalizedStrings({
         termsShort: "Términos",
         policy: "Política de privacidad",
         policyShort: "Privacidad",
-        acceptPrivTerms: "Al crear una cuenta, usted acepta lo siguiente:"
+        acceptPrivTerms: "Al crear una cuenta, usted acepta lo siguiente:",
+        mustAuthorize: "Debe iniciar sesión en su cuenta para utilizar esta función.",
+        continueAsGuest: "Continúa como invitado",
+        mustLogin: "Debe iniciar sesión para utilizar la aplicación con todas sus funciones.",
+        loginWith: "Iniciar sesión con"
     },
 });
