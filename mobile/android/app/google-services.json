@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "401373324848-nuhs2p6fn6dtdh4glqdvrvfbiqhnjq2i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abdusamedakgul.vocan",
+            "certificate_hash": "ddfa9b71f42f53cbbb32327d143cd82afd55711f"
+          }
+        },
+        {
           "client_id": "401373324848-r9b8s81j61tid396qs117nud8rae7673.apps.googleusercontent.com",
           "client_type": 3
         }

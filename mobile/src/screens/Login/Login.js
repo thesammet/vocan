@@ -63,6 +63,7 @@ const Login = ({ navigation }) => {
 
         if (response.error) {
             setIsLoading(false);
+            console.log(response.error)
             customFailMessage(
                 "Can't logging in. Email has been used before."
             );
@@ -100,7 +101,7 @@ const Login = ({ navigation }) => {
                 requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME]
             });
             let appleAuthResponseDecoded = jwt_decode(appleAuthRequestResponse.identityToken)
-            socialLoginMethod(appleAuthResponseDecoded.email, SOCIAL_PASSWORD, "Vocan-" + appleAuthRequestResponse.identityToken.slice(4, 8))
+            socialLoginMethod(appleAuthResponseDecoded.email, SOCIAL_PASSWORD, "Vocan-" + appleAuthRequestResponse.identityToken.slice(-8))
         } catch (error) {
             console.log("Couldnt launch with Apple.")
         }
