@@ -6,8 +6,7 @@ import Home from '../screens/Home'
 import SettingsStack from '../stacks/Settings'
 import HistoryFav from '../screens/HistoryFav'
 import { COLORS } from '../utils/colors'
-import FlashMessage from 'react-native-flash-message';
-
+import FlashMessage from 'react-native-flash-message'
 const Tab = createBottomTabNavigator()
 
 const Tabs = () => {

@@ -27,7 +27,6 @@ import { GuestContext } from '../../context/Guest';
 import { customFailMessage } from '../../utils/show_messages';
 import { validateEmail } from '../../utils/helper_functions';
 import { strings } from '../../utils/localization';
-import { err } from 'react-native-svg/lib/typescript/xml';
 
 const Login = ({ navigation }) => {
     const [email, onChangeEmail] = useState(null)
